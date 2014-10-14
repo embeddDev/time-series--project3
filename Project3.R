@@ -27,8 +27,44 @@
 #INFLATION = beta0 + styrivextir * beta1 + VSK*beta2 + epsilon
 # haerri styrivextri og haekkandi VSK hækkar verdbolgu, gögn til hja t.d. hagstofu
 
-# Comment on the sign and possible magnitudes and discuss whether all of the required data are available.
+
 # Housing Economics (40%)
 
+Data = read.csv("hpi.csv", header=TRUE, sep= ";",dec=",")
+
+#TASK 1
+
+# Construct a structural equation for house prices. Theorize on the expected sign of the parameter
+# estimates on each of the variables. 
+#ANS: 
+
+#Does it make sense to use all of the data? Theorize, 
+
+#ANS: NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
+
+#which data to use and explain your data selection.
+# 
+#ANS: 
+
+# Task 2 Plot the relationship between house prices and leasing over time. Theorize on the relationship between
+# the two variables. Is there an endogenous relationship between the two? Do some preliminary analysis,
+# plotting all variables with the house price index.
 
 
+plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+     type="l", 
+     main="house price index",
+     col="blue") # skrifa i x of y as
+lines(Data$LeaseIndex/max(Data$LeaseIndex) ~Data$YearMonth,type="l", main="Lease index",col="dark red")
+#THEORY : No obvious relation ship  between the variables.
+#We see no endogenous relationship.
+plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+     type="l", 
+     main="house price index",
+     col="blue") # skrifa i x of y as
+lines(Data$ConstructionCostIndex/max(Data$ConstructionCostIndex) ~Data$YearMonth,type="l", main="Lease index",col="dark red")
+lines(Data$RealEstateTransactions/max(Data$RealEstateTransactions) ~Data$YearMonth,type="l", main="Lease index",col="green")
+#Afhverju er realestate transaction svona skritin og fa gogn
+
+layout(1:1)
+plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,type="b", main="house price index")
