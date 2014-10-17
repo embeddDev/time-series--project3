@@ -31,7 +31,7 @@
 # -------Housing Economics (40%)--------
 
 Data = read.csv("hpi.csv", header=TRUE, sep= ";",dec=",")
-
+attach(Data)
 #TASK 1
 
 # Construct a structural equation for house prices. Theorize on the expected sign of the parameter
@@ -50,13 +50,13 @@ Data = read.csv("hpi.csv", header=TRUE, sep= ";",dec=",")
 #Plot the relationship between house prices and leasing over time. Theorize on the relationship 
 # between the two variables. Is there an endogenous relationship between the two? 
 
-plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
      type="l",
      main="Comparison",
      xlab="Time",
      ylab="House Price Index/Lease Index",
      col="black") 
-lines(Data$LeaseIndex/max(Data$LeaseIndex) ~Data$YearMonth,
+lines(LeaseIndex/max(LeaseIndex) ~YearMonth,
       type="l", 
       main="Lease index",
       col="dark red")
@@ -73,20 +73,22 @@ legend("topleft",
 
 # Plot House Price index vs. Construction Cost, Real estate Transactions, Loans of Banks to Households
 layout(1:1)
-plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indices/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(0.1, 1)) 
-lines(Data$ConstructionCostIndex/max(Data$ConstructionCostIndex) ~Data$YearMonth,
+     ylim=c(0.1, 1),
+     lwd=4) 
+lines(ConstructionCostIndex/max(ConstructionCostIndex) ~YearMonth,
       type="l", 
       col="dark red")
-lines(Data$RealEstateTransactions/max(Data$RealEstateTransactions) ~Data$YearMonth,
+lines(RealEstateTransactions/max(RealEstateTransactions) ~YearMonth,
       type="l", 
-      col="green")
-lines(Data$LoansOfBanksToHouseholds/max(Data$LoansOfBanksToHouseholds) ~Data$YearMonth,
+      col="green",
+      )
+lines(LoansOfBanksToHouseholds/max(LoansOfBanksToHouseholds) ~YearMonth,
       type = 'l',
       col="purple"
       )
@@ -94,24 +96,29 @@ legend(0.1,0.4,
        c("House Price index","Construction Cost index","Real Estate Transactions", "Loans of Banks to Housholds"),
        lty = 1,
        col=c('black', 'darkred','green','purple'),
-       cex=0.6)
-       
+       cex=0.6,
+       lwd=4)
+#Loans of Banks to households seem to share similar trend.       
+
+
+
 # Plot House Price index vs. UnindexedLoans, CentralBankRates, Inflation
 layout(1:1)
-plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(0, 1)) 
-lines(Data$Un.indexedLoans/max(Data$Un.indexedLoans) ~Data$YearMonth,
+     ylim=c(0, 1),
+     lwd=4) 
+lines(Un.indexedLoans/max(Un.indexedLoans) ~YearMonth,
       type="l", 
       col="dark red")
-lines(Data$CentralBankRates/max(Data$CentralBankRates) ~Data$YearMonth,
+lines(CentralBankRates/max(CentralBankRates) ~YearMonth,
       type="l", 
       col="green")
-lines(Data$Inflation/max(Data$Inflation) ~Data$YearMonth,
+lines(Inflation/max(Inflation) ~YearMonth,
       type = 'l',
       col="purple"
 )
@@ -119,25 +126,27 @@ legend("topleft",
        c("House Price index","Unindexed Loans","Central Bank Rates", "Inflation"),
        lty = 1,
        col=c('black', 'darkred','green','purple'),
-       cex=0.6)
-
+       cex=0.6,
+       lwd=4)
+#Central Bank Rates seem to share a similar trend.
 
 # Plot House Price index vs. PurchasingPower, PurchasingPowerOfWages, IndexLoans
 layout(1:1)
-plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(-1.6, 1)) 
-lines(Data$PurchasingPower/max(Data$PurchasingPower) ~Data$YearMonth,
+     ylim=c(-1.6, 1),
+     lwd=4) 
+lines(PurchasingPower/max(PurchasingPower) ~YearMonth,
       type="l", 
       col="dark red")
-lines(Data$PurchasingPowerOfWages/max(Data$PurchasingPowerOfWages) ~Data$YearMonth,
+lines(PurchasingPowerOfWages/max(PurchasingPowerOfWages) ~YearMonth,
       type="l", 
       col="green")
-lines(Data$IndexLoans/max(Data$IndexLoans) ~Data$YearMonth,
+lines(IndexLoans/max(IndexLoans) ~YearMonth,
       type = 'l',
       col="purple"
 )
@@ -145,25 +154,27 @@ legend("bottomleft",
        c("House Price index","Purchasing Power","Purchasing Power of Wages", "Index Loans"),
        lty = 1,
        col=c('black', 'darkred','green','purple'),
-       cex=0.6)
-
+       cex=0.6,
+       lwd=4)
+#Purchasing power of wages and index loans, seem to share a similar trend
 
 # Plot House Price index vs. CurrencyLoans, HousingStarts, HousingFinished
 layout(1:1)
-plot(Data$HousePriceIndex/max(Data$HousePriceIndex) ~Data$YearMonth,
+plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(0, 1)) 
-lines(Data$CurrencyLoans/max(Data$CurrencyLoans) ~Data$YearMonth,
+     ylim=c(0, 1),
+     lwd=4) 
+lines(CurrencyLoans/max(CurrencyLoans) ~YearMonth,
       type="l", 
       col="dark red")
-lines(Data$HousingStarts/max(Data$HousingStarts) ~Data$YearMonth,
+lines(HousingStarts/max(HousingStarts) ~YearMonth,
       type="l", 
       col="green")
-lines(Data$HousingFinished/max(Data$HousingFinished) ~Data$YearMonth,
+lines(HousingFinished/max(HousingFinished) ~YearMonth,
       type = 'l',
       col="purple"
 )
@@ -171,5 +182,41 @@ legend("topleft",
        c("House Price index","Currency Loans","Housing Starts", "Housing Finished"),
        lty = 1,
        col=c('black', 'darkred','green','purple'),
-       cex=0.6)
+       cex=0.6,
+       lwd=4)
+#Housing finished seem to share a similar trend.
 
+#now a comparison of variables with similar trend
+plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+     xlab="Time",
+     ylab="Scaled indexes/rates",
+     type="l", 
+     main="Comparison of variables with similar trend",
+     col="black",
+     ylim=c(0, 1),
+     lwd=4) 
+lines(CentralBankRates/max(CentralBankRates) ~YearMonth,
+      type="l", 
+      col="dark red")
+lines(LoansOfBanksToHouseholds/max(LoansOfBanksToHouseholds) ~YearMonth,
+      type="l", 
+      col="green")
+lines(HousingFinished/max(HousingFinished) ~YearMonth,
+      type = 'l',
+      col="purple"
+)
+lines(IndexLoans/max(IndexLoans) ~YearMonth,
+       type = 'l',
+       col="Blue"
+)
+legend("topleft",
+       c("House Price index","Central bank rates","loans to households", "New housing finished", "Indexed loans"),
+       lty = 1,
+       col=c('black', 'darkred','green','purple','Blue'),
+       cex=0.6,
+       lwd=4)
+
+#-----Task 3----------
+#Create a model for the house price index using the relevant available data
+
+HousePrice_mdl =lm(HousePriceIndex ~CentralBankRates)
