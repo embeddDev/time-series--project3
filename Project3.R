@@ -46,7 +46,40 @@ attach(Data)
 # 
 #ANS: 
 
-# TASK 2 
+# ----------------Housing economics  -----------------
+
+#Task 1
+#Construcct a structural equation for house prices
+
+# ANS:
+#       Y ~ Beta0 + Beta1*CCI + Beta2*LBH + Beta3*PPI - Beta4*NHF + Beta5*LI + Beta6*inflation + Beta7*indexedLoans
+
+# where CCI is construction cost index
+# where LBH is Loans from banks to households
+# where PPI is purchasing power index
+# where NHF is new housing finished
+# where LI is Lease index
+
+HousePrice_mdl =lm(HousePriceIndex ~LeaseIndex+
+                     ConstructionCostIndex+
+                     LoansOfBanksToHouseholds+
+                     PurchasingPower+
+                     Inflation+
+                     HousingFinished+
+                     IndexLoans
+                   )
+summary(HousePrice_mdl)
+HousePrices_resid = plot(residuals(HousePrice_mdl), type= 'l')
+
+# see that New housing finished variable does not make a good fit. We are not ready to dump this variable yet. 
+# Because we think it brings information to the system.
+pairs(Data[4:11], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(Data[c(4,12:17)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+#We can see from this pair plot that house price index is higly correlated with housing finished!
+
+
+
+
 #Plot the relationship between house prices and leasing over time. Theorize on the relationship 
 # between the two variables. Is there an endogenous relationship between the two? 
 
@@ -67,10 +100,14 @@ legend("topleft",
        col=c('black', 'darkred'),
        cex=0.6)
 
-#THEORY : No obvious relation ship  between the variables.
-# We see no endogenous relationship.
+#THEORY : There is an apparent linear relationship, but we dont see the economic crash effect with the lease index .
+# We see a endogenous relationship.
 
 # Do some preliminary analysis, plotting all variables with the house price index.
+
+pairs(Data[4:11], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(Data[c(4,12:17)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+
 
 # Plot House Price index vs. Construction Cost, Real estate Transactions, Loans of Banks to Households
 layout(1:1)
@@ -218,6 +255,68 @@ legend("topleft",
        lwd=4)
 
 #-----Task 3----------
-#Create a model for the house price index using the relevant available data
+#Create a model for the house price index using all relevant variables.
 
-HousePrice_mdl =lm(HousePriceIndex ~CentralBankRates+HousingFinished+LoansOfBanksToHouseholds+ConstructionCostIndex)
+
+
+HousePrices_resid = plot(residuals(HousePrice_mdl))
+
+
+
+#New intervention model for 90% loans in the economy 
+Loans90 = rep(0,times=length(Data$Month))
+#1 juli 2004 - 1okt 2008
+Loans90[55:106] = 1
+
+#NEw model with intervention model
+HousePrice_mdl =lm(HousePriceIndex 
+                   ~ConstructionCostIndex+
+                     LoansOfBanksToHouseholds+
+                     HousingFinished+
+                     IndexLoans+
+                     Loans90
+                    )
+summary(HousePrice_mdl)
+#PLOT HPI on fitted model
+plot(HousePriceIndex, type='l', col="blue")
+lines(HousePrice_mdl$fit, type='l', col="red")
+
+
+
+#----------END OF Housing economics ------------------------
+
+#----------   Sales modeling   ---------------------------------
+detach(Data)
+BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
+BuildingSupplyStore = within(BuildingSupplyStore,kalendar <- relevel(kalendar,ref="Normal"))
+#ikea <- within(ikea, Kalender <- relevel(Kalender, ref = "Normal"))
+attach(BuildingSupplyStore)
+
+
+#Plot
+plot(Sales ~Date, type="l",main="Sales",col=3,lwd=5)
+lines(lowess(Sales, f=.1), col = 2,lwd=4)
+# Plot yearly
+weeks = c(1:52,1:52,1:52,1:26)
+plot(Sales~weeks,pch=20,main="Yearly Sales")
+lines(lowess(Sales~weeks, f=.15), col = 2,lwd=4)
+#pairs plot
+pairs(BuildingSupplyStore[2:8], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(BuildingSupplyStore[c(2,9:14)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(BuildingSupplyStore[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+
+
+# ACF and PACF
+acf(diff(Sales,1)) # Alot of MA, nonstationary TS
+pacf(diff(Sales,1)) #AR(3)
+
+Sales.ts = ts(Sales, f=52, start=2006 ,end = c(2009,26))
+plot(decompose(Sales.ts),col="blue")
+
+
+# Modeling
+mod.full<-lm(Sales
+            ~,data=data)
+summary(mod.full)
+
+# Plot the fit,
