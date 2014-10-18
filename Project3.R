@@ -205,12 +205,12 @@ lines(HousingFinished/max(HousingFinished) ~YearMonth,
       type = 'l',
       col="purple"
 )
-lines(IndexLoans/max(IndexLoans) ~YearMonth,
-       type = 'l',
-       col="Blue"
+lines(ConstructionCostIndex/max(ConstructionCostIndex) ~YearMonth,
+      type = 'l',
+      col="blue"
 )
 legend("topleft",
-       c("House Price index","Central bank rates","loans to households", "New housing finished", "Indexed loans"),
+       c("House Price index","Central bank rates","loans to households", "New housing finished","Construnction cost index"),
        lty = 1,
        col=c('black', 'darkred','green','purple','Blue'),
        cex=0.6,
@@ -219,4 +219,4 @@ legend("topleft",
 #-----Task 3----------
 #Create a model for the house price index using the relevant available data
 
-HousePrice_mdl =lm(HousePriceIndex ~CentralBankRates)
+HousePrice_mdl =lm(HousePriceIndex ~CentralBankRates+HousingFinished+LoansOfBanksToHouseholds+ConstructionCostIndex)
