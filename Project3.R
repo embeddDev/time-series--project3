@@ -50,13 +50,14 @@ attach(Data)
 #Plot the relationship between house prices and leasing over time. Theorize on the relationship 
 # between the two variables. Is there an endogenous relationship between the two? 
 
-plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      type="l",
      main="Comparison",
      xlab="Time",
      ylab="House Price Index/Lease Index",
+     ylim=c(-2, 2),
      col="black") 
-lines(LeaseIndex/max(LeaseIndex) ~YearMonth,
+lines((LeaseIndex-mean(LeaseIndex))/sd(LeaseIndex) ~YearMonth,
       type="l", 
       main="Lease index",
       col="dark red")
@@ -73,26 +74,26 @@ legend("topleft",
 
 # Plot House Price index vs. Construction Cost, Real estate Transactions, Loans of Banks to Households
 layout(1:1)
-plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indices/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(0.1, 1),
+     ylim=c(-2, 2.3),
      lwd=4) 
-lines(ConstructionCostIndex/max(ConstructionCostIndex) ~YearMonth,
+lines((ConstructionCostIndex-mean(ConstructionCostIndex))/sd(ConstructionCostIndex) ~YearMonth,
       type="l", 
       col="dark red")
-lines(RealEstateTransactions/max(RealEstateTransactions) ~YearMonth,
+lines((RealEstateTransactions-mean(RealEstateTransactions))/sd(RealEstateTransactions) ~YearMonth,
       type="l", 
       col="green",
       )
-lines(LoansOfBanksToHouseholds/max(LoansOfBanksToHouseholds) ~YearMonth,
+lines((LoansOfBanksToHouseholds-mean(LoansOfBanksToHouseholds))/sd(LoansOfBanksToHouseholds) ~YearMonth,
       type = 'l',
       col="purple"
       )
-legend(0.1,0.4,
+legend("topleft",
        c("House Price index","Construction Cost index","Real Estate Transactions", "Loans of Banks to Housholds"),
        lty = 1,
        col=c('black', 'darkred','green','purple'),
@@ -104,21 +105,21 @@ legend(0.1,0.4,
 
 # Plot House Price index vs. UnindexedLoans, CentralBankRates, Inflation
 layout(1:1)
-plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(0, 1),
+     ylim=c(-1.6, 3.2),
      lwd=4) 
-lines(Un.indexedLoans/max(Un.indexedLoans) ~YearMonth,
+lines((Un.indexedLoans-mean(Un.indexedLoans))/sd(Un.indexedLoans) ~YearMonth,
       type="l", 
       col="dark red")
-lines(CentralBankRates/max(CentralBankRates) ~YearMonth,
+lines((CentralBankRates-mean(CentralBankRates))/sd(CentralBankRates) ~YearMonth,
       type="l", 
       col="green")
-lines(Inflation/max(Inflation) ~YearMonth,
+lines((Inflation-mean(Inflation))/sd(Inflation) ~YearMonth,
       type = 'l',
       col="purple"
 )
@@ -132,25 +133,25 @@ legend("topleft",
 
 # Plot House Price index vs. PurchasingPower, PurchasingPowerOfWages, IndexLoans
 layout(1:1)
-plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(-1.6, 1),
+     ylim=c(-3, 2.5),
      lwd=4) 
-lines(PurchasingPower/max(PurchasingPower) ~YearMonth,
+lines((PurchasingPower-mean(PurchasingPower))/sd(PurchasingPower) ~YearMonth,
       type="l", 
       col="dark red")
-lines(PurchasingPowerOfWages/max(PurchasingPowerOfWages) ~YearMonth,
+lines((PurchasingPowerOfWages-mean(PurchasingPowerOfWages))/sd(PurchasingPowerOfWages) ~YearMonth,
       type="l", 
       col="green")
-lines(IndexLoans/max(IndexLoans) ~YearMonth,
+lines((IndexLoans-mean(IndexLoans))/sd(IndexLoans) ~YearMonth,
       type = 'l',
       col="purple"
 )
-legend("bottomleft",
+legend("topleft",
        c("House Price index","Purchasing Power","Purchasing Power of Wages", "Index Loans"),
        lty = 1,
        col=c('black', 'darkred','green','purple'),
@@ -160,21 +161,21 @@ legend("bottomleft",
 
 # Plot House Price index vs. CurrencyLoans, HousingStarts, HousingFinished
 layout(1:1)
-plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison",
      col="black",
-     ylim=c(0, 1),
+     ylim=c(-1.7, 4.5),
      lwd=4) 
-lines(CurrencyLoans/max(CurrencyLoans) ~YearMonth,
+lines((CurrencyLoans-mean(CurrencyLoans))/sd(CurrencyLoans) ~YearMonth,
       type="l", 
       col="dark red")
-lines(HousingStarts/max(HousingStarts) ~YearMonth,
+lines((HousingStarts-mean(HousingStarts))/sd(HousingStarts) ~YearMonth,
       type="l", 
       col="green")
-lines(HousingFinished/max(HousingFinished) ~YearMonth,
+lines((HousingFinished-mean(HousingFinished))/sd(HousingFinished) ~YearMonth,
       type = 'l',
       col="purple"
 )
@@ -187,25 +188,25 @@ legend("topleft",
 #Housing finished seem to share a similar trend.
 
 #now a comparison of variables with similar trend
-plot(HousePriceIndex/max(HousePriceIndex) ~YearMonth,
+plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
      type="l", 
      main="Comparison of variables with similar trend",
      col="black",
-     ylim=c(0, 1),
+     ylim=c(-1.5, 2.5),
      lwd=4) 
-lines(CentralBankRates/max(CentralBankRates) ~YearMonth,
+lines((CentralBankRates-mean(CentralBankRates))/sd(CentralBankRates) ~YearMonth,
       type="l", 
       col="dark red")
-lines(LoansOfBanksToHouseholds/max(LoansOfBanksToHouseholds) ~YearMonth,
+lines((LoansOfBanksToHouseholds-mean(LoansOfBanksToHouseholds))/sd(LoansOfBanksToHouseholds) ~YearMonth,
       type="l", 
       col="green")
-lines(HousingFinished/max(HousingFinished) ~YearMonth,
+lines((HousingFinished-mean(HousingFinished))/sd(HousingFinished) ~YearMonth,
       type = 'l',
       col="purple"
 )
-lines(ConstructionCostIndex/max(ConstructionCostIndex) ~YearMonth,
+lines((ConstructionCostIndex-mean(ConstructionCostIndex))/sd(ConstructionCostIndex) ~YearMonth,
       type = 'l',
       col="blue"
 )
