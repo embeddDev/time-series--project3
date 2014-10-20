@@ -342,13 +342,9 @@ detach(Data)
 
 
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
-<<<<<<< Updated upstream
 BuildingSupplyStore = within(BuildingSupplyStore,BuildingSupplyStore$Kalendar <- relevel(BuildingSupplyStore$Kalendar,ref="Normal"))
 #ikea <- within(ikea, Kalender <- relevel(Kalender, ref = "Normal"))
-=======
-BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
-#ikea <- within(ikea, Kalender <- relevel(Kalendar, ref = "Normal"))
->>>>>>> Stashed changes
+
 attach(BuildingSupplyStore)
 
 
