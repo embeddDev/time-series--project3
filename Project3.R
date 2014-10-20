@@ -12,21 +12,24 @@
 # Identify causal variables and hypothize an econometric structural equation for the following variables;
 # . Stock price index, for your home country,
 
-#OMX =  beta0 -ISL_GENGI * beta1 + epsilon
+#OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
 #Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
+#Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
+#Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
 #haegt ad nalgast upplysingar t.d. hja gamma.is
 
 # . Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
 #                  students only, as there is no spot market in Iceland),
 
-#NORDPOOL = beta0 - ?tihitastig*beta1 + epsilon
+#NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
 
 # haerra utihitastig laekkar eftirspurn eftir rafmagni, vedurupplysingar eru audvelt ad nalgast
+#tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
 
 # . Inflation.
-#INFLATION = beta0 + styrivextir * beta1 + VSK*beta2 + epsilon
-# haerri styrivextri og haekkandi VSK h?kkar verdbolgu, g?gn til hja t.d. hagstofu
-
+#INFLATION = beta0 - styrivextir * beta1 + VSK*beta2 + penigamagn_i_umferd + epsilon
+# haerri styrivextri og haekkandi VSK laekka verdbolgu, gogn til hja t.d. hagstofu
+#peningamagn i umferd eykur verdbolgu
 
 # -------Housing Economics (40%)--------
 
@@ -59,6 +62,26 @@ attach(Data)
 # where PPI is purchasing power index
 # where NHF is new housing finished
 # where LI is Lease index
+
+# CCI - hvad kostar ad byggja hus hlytur ad hafa ahrif a husnaedisverd
+        #aetti ad hafa mest ahrif.
+# LBH - thvi meira sem bankarnir lana til household þvi fleiri vilja kaupa hus/ibudir
+# PPI - meiri kaupmattur leydir af ser haekkandi verd þar sem folk getur eytt meira i fasteign
+# NHF - tvi fleiri hus tvi meira frambod, þar af leidir -
+# LI - aetti ad vera endogenous samband
+# Ifflation -  ef verdbolga haekkar aetti feisteignaverd ad haekka
+# Indexed Loans - ef lanum fj0lgar i hagkerfinu verda meiri peningar i umferd sem eykur verdbolgu
+
+# Breytur sem eru ekki i modeli:
+# numbers of real estate sales - vid holdum ad tad haldist ekki i hendur, fjoldi lana
+                                #hefur staerri ahrif
+# Central bank rates -  er i engu hlutfalli vid husnaedislan
+# New housing starts - vildum ekki nota baedi tad og NHF, teljum NHF hafa meiri áhrif
+# Purchasing power of wages index -  vildum ekki velja baedi tad og PPI,
+                    #toldum PPI meira relevant. Viljum ekki overfitta.
+# Unindexed loans - tad mikil fylgni vid indexed loans, thurfum ekki baedi
+# Currency dependent loans in the ecconomy - ekki tad stor hluti af heidlarlanum og
+                    #ekki endilegi notad til husnaediskaupa.
 
 HousePrice_mdl =lm(HousePriceIndex ~LeaseIndex+
                      ConstructionCostIndex+
