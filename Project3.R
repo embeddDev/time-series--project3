@@ -12,16 +12,25 @@
 # Identify causal variables and hypothize an econometric structural equation for the following variables;
 # . Stock price index, for your home country,
 
+<<<<<<< Updated upstream
 #OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
 #Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
 #Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
 #Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
+=======
+#OMX =  beta0 -ISL_GENGI * beta1 + epsilon
+#Heakandi kronu gengi laekkar hlutabrefavisitoluna, thvi staerstu felogin gera upp i erlendum gjaldeyri.
+>>>>>>> Stashed changes
 #haegt ad nalgast upplysingar t.d. hja gamma.is
 
 # . Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
 #                  students only, as there is no spot market in Iceland),
 
+<<<<<<< Updated upstream
 #NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
+=======
+#NORDPOOL = beta0 - Utihitastig*beta1 + epsilon
+>>>>>>> Stashed changes
 
 # haerra utihitastig laekkar eftirspurn eftir rafmagni, vedurupplysingar eru audvelt ad nalgast
 #tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
@@ -65,9 +74,9 @@ attach(Data)
 
 # CCI - hvad kostar ad byggja hus hlytur ad hafa ahrif a husnaedisverd
         #aetti ad hafa mest ahrif.
-# LBH - thvi meira sem bankarnir lana til household þvi fleiri vilja kaupa hus/ibudir
-# PPI - meiri kaupmattur leydir af ser haekkandi verd þar sem folk getur eytt meira i fasteign
-# NHF - tvi fleiri hus tvi meira frambod, þar af leidir -
+# LBH - thvi meira sem bankarnir lana til household ?vi fleiri vilja kaupa hus/ibudir
+# PPI - meiri kaupmattur leydir af ser haekkandi verd ?ar sem folk getur eytt meira i fasteign
+# NHF - tvi fleiri hus tvi meira frambod, ?ar af leidir -
 # LI - aetti ad vera endogenous samband
 # Ifflation -  ef verdbolga haekkar aetti feisteignaverd ad haekka
 # Indexed Loans - ef lanum fj0lgar i hagkerfinu verda meiri peningar i umferd sem eykur verdbolgu
@@ -76,7 +85,7 @@ attach(Data)
 # numbers of real estate sales - vid holdum ad tad haldist ekki i hendur, fjoldi lana
                                 #hefur staerri ahrif
 # Central bank rates -  er i engu hlutfalli vid husnaedislan
-# New housing starts - vildum ekki nota baedi tad og NHF, teljum NHF hafa meiri áhrif
+# New housing starts - vildum ekki nota baedi tad og NHF, teljum NHF hafa meiri ?hrif
 # Purchasing power of wages index -  vildum ekki velja baedi tad og PPI,
                     #toldum PPI meira relevant. Viljum ekki overfitta.
 # Unindexed loans - tad mikil fylgni vid indexed loans, thurfum ekki baedi
@@ -319,9 +328,27 @@ legend("topleft",
 
 #----------   Sales modeling   ---------------------------------
 detach(Data)
+
+# ------ Task 1 -------
+
+# Y ~ beta0 + beta1*Mean.temperature(Oslo) - beta2*Total.precipitation(Oslo) + beta3*Mean.temperature(Bergen) - beta4*Total.precipitation(Bergen)
+#    beta5*Print + beta6*InStore + beta7*DirectMarketing + beta8*RADIO + beta9*TV:Taktisk + beta10*TV.Image - beta11*Competitor.spending
+
+# We don't want to use all of the data, for example we think that the sun hours in Oslo are not a significant variable, we think that total
+# precipitaion is way more effective since this is a Building supply store and people are not buying and working as much when it rains/snows, 
+# at least not building houses (outside work). We belive that temperature also has an effect on sales. We think that all kind of marketing will 
+# increase the sales and therefore include all marketing variables with a plus sign. The Competitor spending could also affect our sale, the more 
+# the competitor spends the lower sales in our store, hence the minus sign in front of that variable.
+
+
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
+<<<<<<< Updated upstream
 BuildingSupplyStore = within(BuildingSupplyStore,BuildingSupplyStore$Kalendar <- relevel(BuildingSupplyStore$Kalendar,ref="Normal"))
 #ikea <- within(ikea, Kalender <- relevel(Kalender, ref = "Normal"))
+=======
+BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
+#ikea <- within(ikea, Kalender <- relevel(Kalendar, ref = "Normal"))
+>>>>>>> Stashed changes
 attach(BuildingSupplyStore)
 
 
