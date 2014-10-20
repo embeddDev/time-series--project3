@@ -264,9 +264,12 @@ HousePrices_resid = plot(residuals(HousePrice_mdl))
 
 
 #New intervention model for 90% loans in the economy 
-Loans90 = rep(0,times=length(Data$Month))
+Loans90 = rep(0,times=54) #initialize zeros up to 1 july 2004
 #1 juli 2004 - 1okt 2008
-Loans90[55:106] = 1
+n = 55:106
+hamming_window = 0.54 - 0.46*cos((2*pi*n/(55-1)))
+Loans90 = c(Loans90, hamming_window, rep(0,times=length(Month)-106))
+plot(Loans90 ~YearMonth, type='l', main="90% morgage model")
 
 #NEw model with intervention model
 HousePrice_mdl =lm(HousePriceIndex 
@@ -276,11 +279,17 @@ HousePrice_mdl =lm(HousePriceIndex
                      IndexLoans+
                      Loans90
                     )
+
 summary(HousePrice_mdl)
 #PLOT HPI on fitted model
-plot(HousePriceIndex, type='l', col="blue")
-lines(HousePrice_mdl$fit, type='l', col="red")
-
+plot(HousePriceIndex ~YearMonth, type='l', col="blue",lwd=4)
+lines(HousePrice_mdl$fit, type='l', col="red",lwd=4)
+legend("topleft",
+       c("House Price index", "model fit"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
 
 
 #----------END OF Housing economics ------------------------
@@ -288,10 +297,14 @@ lines(HousePrice_mdl$fit, type='l', col="red")
 #----------   Sales modeling   ---------------------------------
 detach(Data)
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
-BuildingSupplyStore = within(BuildingSupplyStore,kalendar <- relevel(kalendar,ref="Normal"))
+BuildingSupplyStore = within(BuildingSupplyStore,BuildingSupplyStore$Kalendar <- relevel(BuildingSupplyStore$Kalendar,ref="Normal"))
 #ikea <- within(ikea, Kalender <- relevel(Kalender, ref = "Normal"))
 attach(BuildingSupplyStore)
 
+
+
+
+#*************Task 2, preliminary analysis********** 
 
 #Plot
 plot(Sales ~Date, type="l",main="Sales",col=3,lwd=5)
@@ -307,16 +320,21 @@ pairs(BuildingSupplyStore[c(2,16:22)], upper.panel = panel.cor,lower.panel = pan
 
 
 # ACF and PACF
-acf(diff(Sales,1)) # Alot of MA, nonstationary TS
+acf(Sales) # Alot of MA, nonstationary TS
+acf(diff(Sales,1)) 
 pacf(diff(Sales,1)) #AR(3)
 
 Sales.ts = ts(Sales, f=52, start=2006 ,end = c(2009,26))
-plot(decompose(Sales.ts),col="blue")
+plot(stl(Sales.ts,s.window="periodic"))
 
 
+#**********Task 3 - Preliminary sales model***************
+
+adStock = BuildingSupplyStore[17:22]
 # Modeling
 mod.full<-lm(Sales
-            ~,data=data)
+            ~
+              ,data=BuildingSupplyStore)
 summary(mod.full)
 
 # Plot the fit,
