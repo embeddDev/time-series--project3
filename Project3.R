@@ -17,10 +17,7 @@
 #Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
 #Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
 #Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
-=======
-#OMX =  beta0 -ISL_GENGI * beta1 + epsilon
-#Heakandi kronu gengi laekkar hlutabrefavisitoluna, thvi staerstu felogin gera upp i erlendum gjaldeyri.
->>>>>>> Stashed changes
+
 #haegt ad nalgast upplysingar t.d. hja gamma.is
 
 # . Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
@@ -28,9 +25,6 @@
 
 <<<<<<< Updated upstream
 #NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
-=======
-#NORDPOOL = beta0 - Utihitastig*beta1 + epsilon
->>>>>>> Stashed changes
 
 # haerra utihitastig laekkar eftirspurn eftir rafmagni, vedurupplysingar eru audvelt ad nalgast
 #tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
@@ -54,9 +48,8 @@ attach(Data)
 
 #ANS: NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
 
-#which data to use and explain your data selection.
-# 
-#ANS: 
+
+
 
 # ----------------Housing economics  -----------------
 
@@ -72,13 +65,17 @@ attach(Data)
 # where NHF is new housing finished
 # where LI is Lease index
 
+#which data to use and explain your data selection.
+# 
+#ANS: 
+
 # CCI - hvad kostar ad byggja hus hlytur ad hafa ahrif a husnaedisverd
         #aetti ad hafa mest ahrif.
 # LBH - thvi meira sem bankarnir lana til household ?vi fleiri vilja kaupa hus/ibudir
 # PPI - meiri kaupmattur leydir af ser haekkandi verd ?ar sem folk getur eytt meira i fasteign
 # NHF - tvi fleiri hus tvi meira frambod, ?ar af leidir -
 # LI - aetti ad vera endogenous samband
-# Ifflation -  ef verdbolga haekkar aetti feisteignaverd ad haekka
+# Inflation -  ef verdbolga haekkar aetti feisteignaverd ad haekka
 # Indexed Loans - ef lanum fj0lgar i hagkerfinu verda meiri peningar i umferd sem eykur verdbolgu
 
 # Breytur sem eru ekki i modeli:
@@ -168,7 +165,7 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Loans of Banks to households seem to share similar trend.       
+#Loans of Banks to households seem to share similar trend, with a lag of 1 or 2 months.       
 
 
 
@@ -198,7 +195,7 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Central Bank Rates seem to share a similar trend.
+#Central Bank Rates seem to share a similar trend but is is a known fact that its a blunt economic tool.
 
 # Plot House Price index vs. PurchasingPower, PurchasingPowerOfWages, IndexLoans
 layout(1:1)
@@ -226,7 +223,7 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Purchasing power of wages and index loans, seem to share a similar trend
+# index loans, seem to share a similar trend. But not purchasing power as we initially thought!
 
 # Plot House Price index vs. CurrencyLoans, HousingStarts, HousingFinished
 layout(1:1)
@@ -285,13 +282,15 @@ legend("topleft",
        col=c('black', 'darkred','green','purple','Blue'),
        cex=0.6,
        lwd=4)
+#Loans to households seems like the most obvious variable here with lag of 1.
+
 
 #-----Task 3----------
 #Create a model for the house price index using all relevant variables.
 
 
 
-HousePrices_resid = plot(residuals(HousePrice_mdl))
+
 
 
 
@@ -306,13 +305,20 @@ plot(Loans90 ~YearMonth, type='l', main="90% morgage model")
 #NEw model with intervention model
 HousePrice_mdl =lm(HousePriceIndex 
                    ~ConstructionCostIndex+
-                     LoansOfBanksToHouseholds+
-                     HousingFinished+
-                     IndexLoans+
+                     lag(HousingFinished,1)+
+                     
+                     lag(LoansOfBanksToHouseholds,1)+
                      Loans90
                     )
 
 summary(HousePrice_mdl)
+HousePrices_resid = plot(residuals(HousePrice_mdl),
+                         main= "residuals of the new model",
+                         type = 'l',
+                         lwd =3,
+                         col=2
+                         )
+grid()
 #PLOT HPI on fitted model
 plot(HousePriceIndex ~YearMonth, type='l', col="blue",lwd=4)
 lines(HousePrice_mdl$fit, type='l', col="red",lwd=4)
@@ -355,13 +361,28 @@ attach(BuildingSupplyStore)
 #Plot
 plot(Sales ~Date, type="l",main="Sales",col=3,lwd=5)
 lines(lowess(Sales, f=.1), col = 2,lwd=4)
+legend("topleft",
+       c("Sales observation", "Scatter plot smooting"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
 # Plot yearly
 weeks = c(1:52,1:52,1:52,1:26)
 plot(Sales~weeks,pch=20,main="Yearly Sales")
 lines(lowess(Sales~weeks, f=.15), col = 2,lwd=4)
+legend("topleft",
+       c("weekly Sales observations", "Scatter plot smooting"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
 #pairs plot
 pairs(BuildingSupplyStore[2:8], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+
 pairs(BuildingSupplyStore[c(2,9:14)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+#We notice that oslo mean temperature crosses zero and is marginally correlated
+
 pairs(BuildingSupplyStore[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 
 
@@ -371,16 +392,32 @@ acf(diff(Sales,1))
 pacf(diff(Sales,1)) #AR(3)
 
 Sales.ts = ts(Sales, f=52, start=2006 ,end = c(2009,26))
-plot(stl(Sales.ts,s.window="periodic"))
-
-
+plot(stl(Sales.ts,s.window="periodic")) # trend seasonal decomposition
+plot(aggregate(Sales.ts)) # removing seasonal effect by aggregating the data to the annual level
+boxplot(Sales.ts ~ cycle(Sales.ts))
 #**********Task 3 - Preliminary sales model***************
 
 adStock = BuildingSupplyStore[17:22]
+
+
 # Modeling
 mod.full<-lm(Sales
-            ~
+            ~ Oslo...Total.precipitation+
+              Bergen...Mean.temperature+
+              Bergen...Total.precipitation+
+              Print+
+              InStore+
+              DirectMarketing+
+              RADIO+
+              TV.Image+
+              TV.Taktisk
               ,data=BuildingSupplyStore)
 summary(mod.full)
 
 # Plot the fit,
+
+
+
+
+#Task4
+Seas = cycle(Sales.ts)
