@@ -39,20 +39,11 @@ Data = read.csv("hpi.csv", header=TRUE, sep= ";",dec=",")
 attach(Data)
 #TASK 1
 
-# Construct a structural equation for house prices. Theorize on the expected sign of the parameter
-# estimates on each of the variables. 
-#ANS: 
-
+#Task 1
 #Does it make sense to use all of the data? Theorize, 
 
 #ANS: NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
 
-
-
-
-# ----------------Housing economics  -----------------
-
-#Task 1
 #Construcct a structural equation for house prices
 
 # ANS:
@@ -305,7 +296,6 @@ plot(Loans90 ~YearMonth, type='l', main="90% morgage model")
 HousePrice_mdl =lm(HousePriceIndex 
                    ~ConstructionCostIndex+
                      lag(HousingFinished,1)+
-                     
                      lag(LoansOfBanksToHouseholds,1)+
                      Loans90
                     )
@@ -348,13 +338,8 @@ detach(Data)
 
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
 #making normal the default level
-BuildingSupplyStore = within(BuildingSupplyStore,BuildingSupplyStore$Kalendar <- relevel(BuildingSupplyStore$Kalendar,ref="Normal"))
-#ikea <- within(ikea, Kalender <- relevel(Kalender, ref = "Normal"))
-
+BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
 attach(BuildingSupplyStore)
-
-
-
 
 #*************Task 2, preliminary analysis********** 
 
@@ -398,8 +383,6 @@ boxplot(Sales.ts ~ cycle(Sales.ts))
 #**********Task 3 - Preliminary sales model***************
 
 adStock = BuildingSupplyStore[17:22]
-
-
 # Modeling
 mod.full<-lm(Sales
             ~ Oslo...Total.precipitation+
