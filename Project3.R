@@ -407,6 +407,28 @@ mod.full<-lm(Sales ~ adStock$Print
             )
 summary(mod.full)
 
+detach(BuildingSupplyStore)
+
+adstock<-function(X,a){
+  Y<-rep(NA, length(X))
+  Y[1]<-X[1]  
+  for (i in 2:length(X)){
+    Y[i]<-X[i]+a*Y[i-1]
+  }
+  return(Y)
+}
+BuildingSupplyStore$print.adstock<-adstock(BuildingSupplyStore$Print,.75)
+BuildingSupplyStore$InStore.adstock<-adstock(BuildingSupplyStore$InStore,.75)
+BuildingSupplyStore$DirectMarketing.adstock<-adstock(BuildingSupplyStore$DirectMarketing,.75)
+BuildingSupplyStore$RADIO.adstock<-adstock(BuildingSupplyStore$RADIO,.75)
+BuildingSupplyStore$TV.Taktisk.adstock<-adstock(BuildingSupplyStore$TV.Taktisk,.75)
+BuildingSupplyStore$TV.Image.adstock<-adstock(BuildingSupplyStore$TV.Image,.75)
+BuildingSupplyStore$Media.adstock<-BuildingSupplyStore$print.adstock+BuildingSupplyStore$InStore.adstock
+  +BuildingSupplyStore$DirectMarketing.adstock+BuildingSupplyStore$RADIO.adstock
+  +BuildingSupplyStore$TV.Taktisk.adstock+BuildingSupplyStore$TV.Image.adstock
+plot(BuildingSupplyStore$Media.adstock,type="l",col=3)
+#lines(ikea$TV.kr.)
+
 # Plot the fit
 
 
