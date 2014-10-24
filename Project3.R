@@ -1,4 +1,3 @@
-#TASK 1 - project 3
 
 ############################################################################################
 #course:  Time Series Analysis, T-862-TIMA
@@ -10,54 +9,52 @@
 
 # -------Brain storming excersice (10%)-------
 # Identify causal variables and hypothize an econometric structural equation for the following variables;
-# . Stock price index, for your home country,
+# Stock price index, for your home country,
 
 
-#OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
-#Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
-#Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
-#Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
+# OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
+# Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
+# Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
+# Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
+# haegt ad nalgast upplysingar t.d. hja gamma.is
 
-#haegt ad nalgast upplysingar t.d. hja gamma.is
+# Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
+# students only, as there is no spot market in Iceland),
 
-# . Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
-#                  students only, as there is no spot market in Iceland),
-
-#NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
+# NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
 
 # haerra utihitastig laekkar eftirspurn eftir rafmagni, vedurupplysingar eru audvelt ad nalgast
-#tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
+# tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
 
-# . Inflation.
-#INFLATION = beta0 - styrivextir * beta1 + VSK*beta2 + penigamagn_i_umferd + epsilon
+# Inflation.
+# INFLATION = beta0 - styrivextir * beta1 + VSK*beta2 + penigamagn_i_umferd + epsilon
 # haerri styrivextri og haekkandi VSK laekka verdbolgu, gogn til hja t.d. hagstofu
-#peningamagn i umferd eykur verdbolgu
+# peningamagn i umferd eykur verdbolgu
 
 # -------Housing Economics (40%)--------
 
 Data = read.csv("hpi.csv", header=TRUE, sep= ";",dec=",")
 attach(Data)
-#TASK 1
 
-#Task 1
-#Does it make sense to use all of the data? Theorize, 
+# Task 1
 
-#ANS: NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
-
-#Construcct a structural equation for house prices
+# Construct a structural equation for house prices
 
 # ANS:
 #       Y ~ Beta0 + Beta1*CCI + Beta2*LBH + Beta3*PPI - Beta4*NHF + Beta5*LI + Beta6*inflation + Beta7*indexedLoans
-
 # where CCI is construction cost index
 # where LBH is Loans from banks to households
 # where PPI is purchasing power index
 # where NHF is new housing finished
 # where LI is Lease index
 
-#which data to use and explain your data selection.
-# 
-#ANS: 
+# Does it make sense to use all of the data? Theorize,
+
+# ANS: NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
+
+# which data to use and explain your data selection.
+
+# ANS:
 
 # CCI - hvad kostar ad byggja hus hlytur ad hafa ahrif a husnaedisverd
         #aetti ad hafa mest ahrif.
@@ -94,12 +91,12 @@ HousePrices_resid = plot(residuals(HousePrice_mdl), type= 'l')
 # Because we think it brings information to the system.
 pairs(Data[4:11], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 pairs(Data[c(4,12:17)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
-#We can see from this pair plot that house price index is higly correlated with housing finished!
+# We can see from this pair plot that house price index is higly correlated with housing finished!
 
 
 
 
-#Plot the relationship between house prices and leasing over time. Theorize on the relationship 
+# Plot the relationship between house prices and leasing over time. Theorize on the relationship 
 # between the two variables. Is there an endogenous relationship between the two? 
 
 plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
@@ -119,7 +116,7 @@ legend("topleft",
        col=c('black', 'darkred'),
        cex=0.6)
 
-#THEORY : There is an apparent linear relationship, but we dont see the economic crash effect with the lease index .
+# THEORY : There is an apparent linear relationship, but we dont see the economic crash effect with the lease index .
 # We see a endogenous relationship.
 
 # Do some preliminary analysis, plotting all variables with the house price index.
@@ -155,7 +152,7 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Loans of Banks to households seem to share similar trend, with a lag of 1 or 2 months.       
+# Loans of Banks to households seem to share similar trend, with a lag of 1 or 2 months.       
 
 
 
@@ -185,7 +182,7 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Central Bank Rates seem to share a similar trend but is is a known fact that its a blunt economic tool.
+# Central Bank Rates seem to share a similar trend but is is a known fact that its a blunt economic tool.
 
 # Plot House Price index vs. PurchasingPower, PurchasingPowerOfWages, IndexLoans
 layout(1:1)
@@ -241,9 +238,9 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Housing finished seem to share a similar trend.
+# Housing finished seem to share a similar trend.
 
-#now a comparison of variables with similar trend
+# now a comparison of variables with similar trend
 plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
@@ -272,27 +269,21 @@ legend("topleft",
        col=c('black', 'darkred','green','purple','Blue'),
        cex=0.6,
        lwd=4)
-#Loans to households seems like the most obvious variable here with lag of 1.
+# Loans to households seems like the most obvious variable here with lag of 1.
 
 
 #-----Task 3----------
-#Create a model for the house price index using all relevant variables.
+# Create a model for the house price index using all relevant variables.
 
-
-
-
-
-
-
-#New intervention model for 90% loans in the economy 
+# New intervention model for 90% loans in the economy 
 Loans90 = rep(0,times=54) #initialize zeros up to 1 july 2004
-#1 juli 2004 - 1okt 2008
+# 1 juli 2004 - 1okt 2008
 n = 55:106
 hamming_window = 0.54 - 0.46*cos((2*pi*n/(55-1)))
 Loans90 = c(Loans90, hamming_window, rep(0,times=length(Month)-106))
 plot(Loans90 ~YearMonth, type='l', main="90% morgage model")
 
-#NEw model with intervention model
+# New model with intervention model
 HousePrice_mdl =lm(HousePriceIndex 
                    ~ConstructionCostIndex+
                      lag(HousingFinished,1)+
@@ -308,7 +299,7 @@ HousePrices_resid = plot(residuals(HousePrice_mdl),
                          col=2
                          )
 grid()
-#PLOT HPI on fitted model
+# PLOT HPI on fitted model
 plot(HousePriceIndex ~YearMonth, type='l', col="blue",lwd=4)
 lines(HousePrice_mdl$fit, type='l', col="red",lwd=4)
 legend("topleft",
@@ -337,13 +328,13 @@ detach(Data)
 
 
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
-#making normal the default level
+# making normal the default level
 BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
 attach(BuildingSupplyStore)
 
 #*************Task 2, preliminary analysis********** 
 
-#Plot
+# Plot
 plot(Sales, type="l",main="Sales",col=1,lwd=1)
 lines(lowess(Sales, f=.1), col = 2,lwd=4)
 legend("topleft",
@@ -362,11 +353,11 @@ legend("topleft",
        col=c('black', 'red'),
        cex=0.6,
        lwd=4)
-#pairs plot
+# pairs plot
 pairs(BuildingSupplyStore[2:8], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 
 pairs(BuildingSupplyStore[c(2,9:14)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
-#We notice that oslo mean temperature crosses zero and is marginally correlated
+# We notice that oslo mean temperature crosses zero and is marginally correlated
 
 pairs(BuildingSupplyStore[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 
@@ -403,5 +394,5 @@ summary(mod.full)
 
 
 
-#Task4
+# Task4
 Seas = cycle(Sales.ts)
