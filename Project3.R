@@ -344,16 +344,17 @@ BuildingSupplyStore$DirectMarketing = as.numeric.factor(BuildingSupplyStore$Dire
 BuildingSupplyStore$RADIO = as.numeric.factor(BuildingSupplyStore$RADIO)
 BuildingSupplyStore$TV.Taktisk = as.numeric.factor(BuildingSupplyStore$TV.Taktisk)
 BuildingSupplyStore$TV.Image = as.numeric.factor(BuildingSupplyStore$TV.Image)
+Sales.ts = ts(data=Sales, start=c(2006,1),end=c(2009,26),f=52)
 #making normal the default level
 BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
-BuildingSupplyStore$Sales = ts(data=BuildingSupplyStore$Sales, start =c(2006,1),end=c(2009,26),f=52)
+#BuildingSupplyStore$Sales = ts(data=BuildingSupplyStore$Sales, start =c(2006,1),end=c(2009,26),f=52)
 attach(BuildingSupplyStore)
 
 #*************Task 2, preliminary analysis********** 
 
 #Plot
-Sales = ts()
-ts.plot(Sales, type="l",main="Sales",col=1,lwd=1)
+
+plot(Sales.ts, type="l",main="Sales",col=1,lwd=1)
 lines(lowess(Sales, f=.1), col = 2,lwd=4)
 legend("topleft",
        c("Sales observation", "Scatter plot smooting"),
@@ -363,7 +364,7 @@ legend("topleft",
        lwd=4)
 # Plot yearly
 weeks = c(1:52,1:52,1:52,1:26)
-ts.plot(Sales~week,pch=20,main="Yearly Sales")
+plot(as.numeric(Sales) ~weeks,pch=20,main="Yearly Sales")
 lines(lowess(Sales~weeks, f=.15), col = 2,lwd=4)
 legend("topleft",
        c("weekly Sales observations", "Scatter plot smooting"),
@@ -393,7 +394,7 @@ boxplot(Sales.ts ~ cycle(Sales.ts))
 
 
 # Modeling
-mod.full<-lm(Sales ~ Print+
+mod.full<-lm(Sales.ts ~ Print+
                 InStore+
                DirectMarketing+
                RADIO+
@@ -406,7 +407,7 @@ mod.full<-lm(Sales ~ Print+
                Bergen...Mean.temperature+
                Bergen...Total.precipitation+
                Competitor.spending+
-               Kalendar
+               Kalendar,
                Data=BuildingSupplyStore
                 #na.action = na.omit
             )
@@ -433,7 +434,7 @@ BuildingSupplyStore$Media.adstock<-BuildingSupplyStore$print.adstock+BuildingSup
   +BuildingSupplyStore$DirectMarketing.adstock+BuildingSupplyStore$RADIO.adstock
   +BuildingSupplyStore$TV.Taktisk.adstock+BuildingSupplyStore$TV.Image.adstock
 plot(BuildingSupplyStore$Media.adstock,type="l",col=3)
-#lines(ikea$TV.kr.)
+lines(BuildingSupplyStore$TV.Taktisk)
 
 
 # Plot the fit
