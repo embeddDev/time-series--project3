@@ -393,20 +393,25 @@ boxplot(Sales.ts ~ cycle(Sales.ts))
 
 
 # Modeling
-mod.full<-lm(Sales ~ adStock$Print
-#               Oslo...Total.precipitation+
-#               Bergen...Mean.temperature+
-#               Bergen...Total.precipitation+
-#               Print+
-#               InStore+
-#               DirectMarketing+
-#               RADIO+
-#               TV.Image+
-#               TV.Taktisk
-#               ,data=BuildingSupplyStore
+mod.full<-lm(Sales ~ Print+
+                InStore+
+               DirectMarketing+
+               RADIO+
+               TV.Taktisk+
+               TV.Image+
+               Unemployment.rate+
+               Sol.Oslo+
+               Oslo...Mean.temperature+
+               Oslo...Total.precipitation+
+               Bergen...Mean.temperature+
+               Bergen...Total.precipitation+
+               Competitor.spending+
+               Kalendar
+               Data=BuildingSupplyStore
+                #na.action = na.omit
             )
 summary(mod.full)
-
+plot(residuals(mod.full),type = 'l')
 # Plot the fit
 
 
