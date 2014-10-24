@@ -383,18 +383,24 @@ boxplot(Sales.ts ~ cycle(Sales.ts))
 #**********Task 3 - Preliminary sales model***************
 
 adStock = BuildingSupplyStore[17:22]
+for(i in 1:6){
+  adStock[i] = as.numeric(as.character(adStock[i]))
+  #adStock[i] = na.omit(adStock[i])
+}
+
 # Modeling
 mod.full<-lm(Sales
-            ~ Oslo...Total.precipitation+
-              Bergen...Mean.temperature+
-              Bergen...Total.precipitation+
-              Print+
-              InStore+
-              DirectMarketing+
-              RADIO+
-              TV.Image+
-              TV.Taktisk
-              ,data=BuildingSupplyStore
+            ~ adStock$Print
+#               Oslo...Total.precipitation+
+#               Bergen...Mean.temperature+
+#               Bergen...Total.precipitation+
+#               Print+
+#               InStore+
+#               DirectMarketing+
+#               RADIO+
+#               TV.Image+
+#               TV.Taktisk
+#               ,data=BuildingSupplyStore
             )
 summary(mod.full)
 
