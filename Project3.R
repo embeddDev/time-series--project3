@@ -12,7 +12,7 @@
 # Identify causal variables and hypothize an econometric structural equation for the following variables;
 # . Stock price index, for your home country,
 
-<<<<<<< Updated upstream
+
 #OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
 #Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
 #Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
@@ -23,7 +23,6 @@
 # . Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
 #                  students only, as there is no spot market in Iceland),
 
-<<<<<<< Updated upstream
 #NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
 
 # haerra utihitastig laekkar eftirspurn eftir rafmagni, vedurupplysingar eru audvelt ad nalgast
@@ -348,6 +347,7 @@ detach(Data)
 
 
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
+#making normal the default level
 BuildingSupplyStore = within(BuildingSupplyStore,BuildingSupplyStore$Kalendar <- relevel(BuildingSupplyStore$Kalendar,ref="Normal"))
 #ikea <- within(ikea, Kalender <- relevel(Kalender, ref = "Normal"))
 
@@ -359,7 +359,7 @@ attach(BuildingSupplyStore)
 #*************Task 2, preliminary analysis********** 
 
 #Plot
-plot(Sales ~Date, type="l",main="Sales",col=3,lwd=5)
+plot(Sales, type="l",main="Sales",col=1,lwd=1)
 lines(lowess(Sales, f=.1), col = 2,lwd=4)
 legend("topleft",
        c("Sales observation", "Scatter plot smooting"),
@@ -411,7 +411,8 @@ mod.full<-lm(Sales
               RADIO+
               TV.Image+
               TV.Taktisk
-              ,data=BuildingSupplyStore)
+              ,data=BuildingSupplyStore
+            )
 summary(mod.full)
 
 # Plot the fit,
