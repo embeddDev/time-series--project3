@@ -337,14 +337,23 @@ detach(Data)
 
 
 BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
+as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
+BuildingSupplyStore$Print = as.numeric.factor(BuildingSupplyStore$Print)
+BuildingSupplyStore$InStore = as.numeric.factor(BuildingSupplyStore$InStore)
+BuildingSupplyStore$DirectMarketing = as.numeric.factor(BuildingSupplyStore$DirectMarketing)
+BuildingSupplyStore$RADIO = as.numeric.factor(BuildingSupplyStore$RADIO)
+BuildingSupplyStore$TV.Taktisk = as.numeric.factor(BuildingSupplyStore$TV.Taktisk)
+BuildingSupplyStore$TV.Image = as.numeric.factor(BuildingSupplyStore$TV.Image)
 #making normal the default level
 BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
+BuildingSupplyStore$Sales = ts(data=BuildingSupplyStore$Sales, start =c(2006,1),end=c(2009,26),f=52)
 attach(BuildingSupplyStore)
 
 #*************Task 2, preliminary analysis********** 
 
 #Plot
-plot(Sales, type="l",main="Sales",col=1,lwd=1)
+Sales = ts()
+ts.plot(Sales, type="l",main="Sales",col=1,lwd=1)
 lines(lowess(Sales, f=.1), col = 2,lwd=4)
 legend("topleft",
        c("Sales observation", "Scatter plot smooting"),
@@ -354,7 +363,7 @@ legend("topleft",
        lwd=4)
 # Plot yearly
 weeks = c(1:52,1:52,1:52,1:26)
-plot(Sales~weeks,pch=20,main="Yearly Sales")
+ts.plot(Sales~week,pch=20,main="Yearly Sales")
 lines(lowess(Sales~weeks, f=.15), col = 2,lwd=4)
 legend("topleft",
        c("weekly Sales observations", "Scatter plot smooting"),
@@ -382,15 +391,9 @@ plot(aggregate(Sales.ts)) # removing seasonal effect by aggregating the data to 
 boxplot(Sales.ts ~ cycle(Sales.ts))
 #**********Task 3 - Preliminary sales model***************
 
-adStock = BuildingSupplyStore[17:22]
-for(i in 1:6){
-  adStock[i] = as.numeric(as.character(adStock[i]))
-  #adStock[i] = na.omit(adStock[i])
-}
 
 # Modeling
-mod.full<-lm(Sales
-            ~ adStock$Print
+mod.full<-lm(Sales ~ adStock$Print
 #               Oslo...Total.precipitation+
 #               Bergen...Mean.temperature+
 #               Bergen...Total.precipitation+
@@ -404,7 +407,7 @@ mod.full<-lm(Sales
             )
 summary(mod.full)
 
-# Plot the fit,
+# Plot the fit
 
 
 
