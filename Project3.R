@@ -528,20 +528,21 @@ legend("topleft",
 detach(BSS)
 attach(BSS) 
 
-
 #TASK 4
 # Modeling
+
+
 mod.bestfit<-lm(Sales ~ Media.adstock+
                  Unemployment.rate+
-                 #Sol.Oslo+
-                 # Oslo...Mean.temperature+
+                 Sol.Oslo+
+                  Oslo...Mean.temperature+
                  Oslo...Total.precipitation+
-                 #Bergen...Mean.temperature+
+                 Bergen...Mean.temperature+
                  Bergen...Total.precipitation+
-                 #Competitor.spending+
+                 Competitor.spending+
                  Kalendar+
                  Tracking.smoothed+
-               Season
+                 Season
                #na.action = na.omit
 )
 summary(mod.bestfit)
@@ -555,7 +556,8 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 
-
+eps <- Sales-mod.full$fit
+RMSE <- sqrt(mean(eps^2))
 # Plot the fit
 
 
