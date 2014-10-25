@@ -337,14 +337,14 @@ detach(Data)
 
 
 BSS = read.csv("BSS.csv", header=TRUE, sep= ";",dec=",")
-as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
-BSS$Print = as.numeric.factor(BSS$Print)
-#BSS$InStore = as.numeric.factor(BSS$InStore)
-#BSS$DirectMarketing = as.numeric.factor(BSS$DirectMarketing)
-#BSS$RADIO = as.numeric.factor(BSS$RADIO)
-BSS$TV.Taktisk = as.numeric.factor(BSS$TV.Taktisk)
-BSS$TV.Image = as.numeric.factor(BSS$TV.Image)
-BSS$Sales = as.numeric.factor(BSS$Sales)
+as.integer.factor <- function(x) {as.integer(levels(x))[x]}
+BSS$TV.Taktisk = as.integer.factor(BSS$TV.Taktisk)
+BSS$TV.Image = as.integer.factor(BSS$TV.Image)
+BSS$Sales = as.integer.factor(BSS$Sales)
+BSS$Sol.Oslo = as.integer.factor(BSS$Sol.Oslo)
+BSS$Oslo...Mean.temperature = as.integer.factor(BSS$Oslo...Mean.temperature)
+BSS$Bergen...Mean.temperature = as.integer.factor(BSS$Bergen...Mean.temperature)
+BSS$Bergen...Total.precipitation = as.integer.factor(BSS$Bergen...Total.precipitation)
 Sales.ts = ts(data=BSS$Sales, start=c(2006,1),end=c(2009,26),f=52)
 #making normal the default level
 BSS = within(BSS,Kalendar <- relevel(Kalendar,ref="Normal"))
