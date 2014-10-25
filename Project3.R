@@ -432,10 +432,15 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 #Mean is zero, but the variance is not constant. Thus, the residuals is not white noise
+plot(Sales,type='l')
+lines(mod.full$fit, col=2)
+legend("topleft",
+       c("Sales data", "fitted siles data"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
 
-
-#attached <- search()
-#attached[!grepl("package", attached)]
 
 adstock<-function(X,a){
   Y<-rep(NA, length(X))
@@ -522,10 +527,42 @@ detach(BSS)
 attach(BSS) 
 
 
+#TASK 4
+# Modeling
+mod.full<-lm(Sales ~ Print+
+               InStore+
+               DirectMarketing+
+               RADIO+
+               TV.Taktisk+
+               TV.Image+
+               Unemployment.rate+
+               Sol.Oslo+
+               Oslo...Mean.temperature+
+               Oslo...Total.precipitation+
+               Bergen...Mean.temperature+
+               Bergen...Total.precipitation+
+               Competitor.spending+
+               Kalendar+
+               Season
+             #na.action = na.omit
+)
+summary(mod.full)
+plot(residuals(mod.full),type = 'l')
+medaltal = rep(mean(residuals(mod.full)),times=length(residuals(mod.full)))
+lines(medaltal,col=2)
+legend("topleft",
+       c("residuals of the full model", "mean of the residuals"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+
+
 # Plot the fit
 
 
-
+#attached <- search()
+#attached[!grepl("package", attached)]
 
 #Task4
 Seas = cycle(Sales.ts)
