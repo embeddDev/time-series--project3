@@ -531,26 +531,22 @@ attach(BSS)
 
 #TASK 4
 # Modeling
-mod.full<-lm(Sales ~ Print+
-               InStore+
-               DirectMarketing+
-               RADIO+
-               TV.Taktisk+
-               TV.Image+
-               Unemployment.rate+
-               Sol.Oslo+
-               Oslo...Mean.temperature+
-               Oslo...Total.precipitation+
-               Bergen...Mean.temperature+
-               Bergen...Total.precipitation+
-               Competitor.spending+
-               Kalendar+
+mod.bestfit<-lm(Sales ~ Media.adstock+
+                 Unemployment.rate+
+                 #Sol.Oslo+
+                 # Oslo...Mean.temperature+
+                 Oslo...Total.precipitation+
+                 #Bergen...Mean.temperature+
+                 Bergen...Total.precipitation+
+                 #Competitor.spending+
+                 Kalendar+
+                 Tracking.smoothed+
                Season
-             #na.action = na.omit
+               #na.action = na.omit
 )
-summary(mod.full)
-plot(residuals(mod.full),type = 'l')
-medaltal = rep(mean(residuals(mod.full)),times=length(residuals(mod.full)))
+summary(mod.bestfit)
+plot(residuals(mod.bestfit),type = 'l')
+medaltal = rep(mean(residuals(mod.bestfit)),times=length(residuals(mod.bestfit)))
 lines(medaltal,col=2)
 legend("topleft",
        c("residuals of the full model", "mean of the residuals"),
