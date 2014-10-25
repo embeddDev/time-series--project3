@@ -443,7 +443,7 @@ legend("topleft",
 
 eps <- Sales-mod.full$fit
 RMSE <- sqrt(mean(eps^2))
-
+RMSE
 adstock<-function(X,a){
   Y<-rep(NA, length(X))
   Y[1]<-X[1]  
@@ -541,14 +541,14 @@ ccf(Sales, Unemployment.rate, lag.max=52)
 ccf(Sales, Competitor.spending)
 mod.bestfit<-lm(Sales ~ Media.adstock+
                  lag(Unemployment.rate,3)+
-                 Sol.Oslo+
-                  Oslo...Mean.temperature+
+                # Sol.Oslo+
+                 # Oslo...Mean.temperature+
                 # Oslo...Total.precipitation+
-                 Bergen...Mean.temperature+
-                 Bergen...Total.precipitation+
-                 Competitor.spending+
+                # Bergen...Mean.temperature+
+                # Bergen...Total.precipitation+
+                 #Competitor.spending+
                  Kalendar+
-                 Tracking.smoothed+
+                 #Tracking.smoothed+
                  Season
                #na.action = na.omit
 )
