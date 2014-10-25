@@ -441,6 +441,8 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 
+eps <- Sales-mod.full$fit
+RMSE <- sqrt(mean(eps^2))
 
 adstock<-function(X,a){
   Y<-rep(NA, length(X))
