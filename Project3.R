@@ -336,20 +336,20 @@ detach(Data)
 # the competitor spends the lower sales in our store, hence the minus sign in front of that variable.
 
 
-BuildingSupplyStore = read.csv("BSS.csv", header=TRUE, sep= ";",dec=",")
+BSS = read.csv("BSS.csv", header=TRUE, sep= ";",dec=",")
 as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
-BuildingSupplyStore$Print = as.numeric.factor(BuildingSupplyStore$Print)
-#BuildingSupplyStore$InStore = as.numeric.factor(BuildingSupplyStore$InStore)
-#BuildingSupplyStore$DirectMarketing = as.numeric.factor(BuildingSupplyStore$DirectMarketing)
-#BuildingSupplyStore$RADIO = as.numeric.factor(BuildingSupplyStore$RADIO)
-BuildingSupplyStore$TV.Taktisk = as.numeric.factor(BuildingSupplyStore$TV.Taktisk)
-BuildingSupplyStore$TV.Image = as.numeric.factor(BuildingSupplyStore$TV.Image)
-BuildingSupplyStore$Sales = as.numeric.factor(BuildingSupplyStore$Sales)
-Sales.ts = ts(data=BuildingSupplyStore$Sales, start=c(2006,1),end=c(2009,26),f=52)
+BSS$Print = as.numeric.factor(BSS$Print)
+#BSS$InStore = as.numeric.factor(BSS$InStore)
+#BSS$DirectMarketing = as.numeric.factor(BSS$DirectMarketing)
+#BSS$RADIO = as.numeric.factor(BSS$RADIO)
+BSS$TV.Taktisk = as.numeric.factor(BSS$TV.Taktisk)
+BSS$TV.Image = as.numeric.factor(BSS$TV.Image)
+BSS$Sales = as.numeric.factor(BSS$Sales)
+Sales.ts = ts(data=BSS$Sales, start=c(2006,1),end=c(2009,26),f=52)
 #making normal the default level
-BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
-#BuildingSupplyStore$Sales = ts(data=BuildingSupplyStore$Sales, start =c(2006,1),end=c(2009,26),f=52)
-attach(BuildingSupplyStore)
+BSS = within(BSS,Kalendar <- relevel(Kalendar,ref="Normal"))
+#BSS$Sales = ts(data=BSS$Sales, start =c(2006,1),end=c(2009,26),f=52)
+attach(BSS)
 
 #*************Task 2, preliminary analysis********** 
 
@@ -366,7 +366,7 @@ legend("topleft",
 # Plot yearly
 weeks = c(1:52,1:52,1:52,1:26)
 plot(as.numeric(Sales) ~weeks,pch=20,main="Yearly Sales")
-lines(lowess(BuildingSupplyStore$Sales~weeks, f=.15), col = 2,lwd=4)
+lines(lowess(BSS$Sales~weeks, f=.15), col = 2,lwd=4)
 legend("topleft",
        c("weekly Sales observations", "Scatter plot smooting"),
        lty = 1,
@@ -374,12 +374,12 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 #pairs plot
-pairs(BuildingSupplyStore[2:8], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(BSS[2:8], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 
-pairs(BuildingSupplyStore[c(2,9:14)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(BSS[c(2,9:14)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 #We notice that oslo mean temperature crosses zero and is marginally correlated
 
-pairs(BuildingSupplyStore[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
+pairs(BSS[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 
 
 # ACF and PACF
@@ -409,13 +409,13 @@ mod.full<-lm(Sales.ts ~ Print+
                Bergen...Total.precipitation+
                Competitor.spending+
                Kalendar,
-               Data=BuildingSupplyStore
+               Data=BSS
                 #na.action = na.omit
             )
 summary(mod.full)
 plot(residuals(mod.full),type = 'l')
 
-detach(BuildingSupplyStore)
+detach(BSS)
 
 adstock<-function(X,a){
   Y<-rep(NA, length(X))
@@ -425,17 +425,17 @@ adstock<-function(X,a){
   }
   return(Y)
 }
-BuildingSupplyStore$print.adstock<-adstock(BuildingSupplyStore$Print,.75)
-BuildingSupplyStore$InStore.adstock<-adstock(BuildingSupplyStore$InStore,.75)
-BuildingSupplyStore$DirectMarketing.adstock<-adstock(BuildingSupplyStore$DirectMarketing,.75)
-BuildingSupplyStore$RADIO.adstock<-adstock(BuildingSupplyStore$RADIO,.75)
-BuildingSupplyStore$TV.Taktisk.adstock<-adstock(BuildingSupplyStore$TV.Taktisk,.75)
-BuildingSupplyStore$TV.Image.adstock<-adstock(BuildingSupplyStore$TV.Image,.75)
-BuildingSupplyStore$Media.adstock<-(BuildingSupplyStore$print.adstock+BuildingSupplyStore$InStore.adstock
-  +BuildingSupplyStore$DirectMarketing.adstock+BuildingSupplyStore$RADIO.adstock
-  +BuildingSupplyStore$TV.Taktisk.adstock+BuildingSupplyStore$TV.Image.adstock)
-plot(BuildingSupplyStore$Media.adstock,type="l",col=3)
-lines(BuildingSupplyStore$TV.Taktisk)
+BSS$print.adstock<-adstock(BSS$Print,.75)
+BSS$InStore.adstock<-adstock(BSS$InStore,.75)
+BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.75)
+BSS$RADIO.adstock<-adstock(BSS$RADIO,.75)
+BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.75)
+BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.75)
+BSS$Media.adstock<-(BSS$print.adstock+BSS$InStore.adstock
+  +BSS$DirectMarketing.adstock+BSS$RADIO.adstock
+  +BSS$TV.Taktisk.adstock+BSS$TV.Image.adstock)
+plot(BSS$Media.adstock,type="l",col=3)
+lines(BSS$TV.Taktisk)
 
 
 # Plot the fit
