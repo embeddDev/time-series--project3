@@ -442,15 +442,51 @@ adstock<-function(X,a){
   }
   return(Y)
 }
-BSS$print.adstock<-adstock(BSS$Print,.75)
+BSS$print.adstock<-adstock(BSS$Print,.75) 
 BSS$InStore.adstock<-adstock(BSS$InStore,.75)
-BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.75)
-BSS$RADIO.adstock<-adstock(BSS$RADIO,.75)
-BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.75)
-BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.75)
-BSS$Media.adstock<-(BSS$print.adstock+BSS$InStore.adstock
+BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.75) 
+BSS$RADIO.adstock<-adstock(BSS$RADIO,.75)  
+BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.75) 
+BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.75)  
+BSS$Media.adstock<-(BSS$print.adstock+BSS$InStore.adstock  
   +BSS$DirectMarketing.adstock+BSS$RADIO.adstock
   +BSS$TV.Taktisk.adstock+BSS$TV.Image.adstock)
+
+plot(BSS$print.adstock,type="l",col=1)
+lines(BSS$Print, col=2)
+legend("topleft",
+       c("Print.adstock", "Print"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+
+plot(BSS$InStore.adstock,type="l",col=1)
+lines(BSS$InStore, col=2)
+legend("topleft",
+       c("InStore.adstock", "InStore"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+
+plot(BSS$DirectMarketing.adstock,type="l",col=1)
+lines(BSS$DirectMarketing, col=2)
+legend("topleft",
+       c("DirectMarketing.adstock", "DirectMarketing"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+
+plot(BSS$RADIO.adstock,type="l",col=1)
+lines(BSS$RADIO, col=2)
+legend("topleft",
+       c("RADIO.adstock", "RADIO"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
 
 plot(BSS$TV.Taktisk.adstock,type="l",col=1)
 lines(BSS$TV.Taktisk, col=2)
@@ -460,14 +496,25 @@ legend("topleft",
        col=c('black', 'red'),
        cex=0.6,
        lwd=4)
-plot(BSS$TV.Image,type="l",col=1)
+
+plot(BSS$TV.Image.adstock,type="l",col=1)
 lines(BSS$TV.Image, col=2)
 legend("topleft",
-       c(""),
+       c("TV.Image.adstock","TV.image"),
        lty = 1,
        col=c('black', 'red'),
        cex=0.6,
        lwd=4)
+
+plot(BSS$Media.adstock,type="l",col=1)
+lines(BSS$Respons.Media, col=2)
+legend("topleft",
+       c("Media.adstock","Respons.Media"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+
 detach(BSS)
 attach(BSS) 
 
