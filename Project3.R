@@ -345,6 +345,12 @@ BSS$Sol.Oslo = as.integer.factor(BSS$Sol.Oslo)
 BSS$Oslo...Mean.temperature = as.integer.factor(BSS$Oslo...Mean.temperature)
 BSS$Bergen...Mean.temperature = as.integer.factor(BSS$Bergen...Mean.temperature)
 BSS$Bergen...Total.precipitation = as.integer.factor(BSS$Bergen...Total.precipitation)
+BSS$Oslo...Total.precipitation = as.integer.factor(BSS$Oslo...Total.precipitation)
+BSS$Competitor.spending = as.integer.factor(BSS$Competitor.spending)
+BSS$Tracking = as.integer.factor(BSS$Tracking)
+BSS$Tracking.smoothed = as.integer.factor(BSS$Tracking.smoothed)
+BSS$Respons.Media = as.integer.factor(BSS$Respons.Media)
+BSS$Unemployment.rate = as.integer.factor(BSS$Unemployment.rate)
 Sales.ts = ts(data=BSS$Sales, start=c(2006,1),end=c(2009,26),f=52)
 #making normal the default level
 BSS = within(BSS,Kalendar <- relevel(Kalendar,ref="Normal"))
@@ -364,7 +370,7 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 # Plot yearly
-weeks = c(1:52,1:52,1:52,1:26)
+weeks = c(1:52,1:52,1:52,1:25)
 plot(as.numeric(Sales) ~weeks,pch=20,main="Yearly Sales")
 lines(lowess(BSS$Sales~weeks, f=.15), col = 2,lwd=4)
 legend("topleft",
@@ -383,19 +389,20 @@ pairs(BSS[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.
 
 
 # ACF and PACF
+layout(1:3)
 acf(Sales) # Alot of MA, nonstationary TS
 acf(diff(Sales,1)) 
-pacf(diff(Sales,1)) #AR(3)
-
-Sales.ts = ts(Sales, f=52, start=2006 ,end = c(2009,26))
+pacf(diff(Sales,1)) #AR(3), maybe AR(2)
+layout(1:1)
 plot(stl(Sales.ts,s.window="periodic")) # trend seasonal decomposition
+#We see alot of seasonality and trend in sales
 plot(aggregate(Sales.ts)) # removing seasonal effect by aggregating the data to the annual level
 boxplot(Sales.ts ~ cycle(Sales.ts))
 #**********Task 3 - Preliminary sales model***************
 
 
 # Modeling
-mod.full<-lm(Sales.ts ~ Print+
+mod.full<-lm(Sales ~ Print+
                 InStore+
                DirectMarketing+
                RADIO+
@@ -408,14 +415,24 @@ mod.full<-lm(Sales.ts ~ Print+
                Bergen...Mean.temperature+
                Bergen...Total.precipitation+
                Competitor.spending+
-               Kalendar,
-               Data=BSS
+               Kalendar
                 #na.action = na.omit
             )
 summary(mod.full)
 plot(residuals(mod.full),type = 'l')
+medaltal = rep(mean(residuals(mod.full)),times=length(residuals(mod.full)))
+lines(medaltal,col=2)
+legend("topleft",
+       c("residuals of the full model", "mean of the residuals"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+#Mean is zero, but the variance is not constant. Thus, the residuals is not white noise
 
-detach(BSS)
+
+#attached <- search()
+#attached[!grepl("package", attached)]
 
 adstock<-function(X,a){
   Y<-rep(NA, length(X))
@@ -434,8 +451,25 @@ BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.75)
 BSS$Media.adstock<-(BSS$print.adstock+BSS$InStore.adstock
   +BSS$DirectMarketing.adstock+BSS$RADIO.adstock
   +BSS$TV.Taktisk.adstock+BSS$TV.Image.adstock)
-plot(BSS$Media.adstock,type="l",col=3)
-lines(BSS$TV.Taktisk)
+
+plot(BSS$TV.Taktisk.adstock,type="l",col=1)
+lines(BSS$TV.Taktisk, col=2)
+legend("topleft",
+       c("TV.Taktisk.adstock", "TV.Taktisk"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+plot(BSS$TV.Image,type="l",col=1)
+lines(BSS$TV.Image, col=2)
+legend("topleft",
+       c(""),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
+detach(BSS)
+attach(BSS) 
 
 
 # Plot the fit
