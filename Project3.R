@@ -452,12 +452,12 @@ adstock<-function(X,a){
   }
   return(Y)
 }
-BSS$print.adstock<-adstock(BSS$Print,.75) 
-BSS$InStore.adstock<-adstock(BSS$InStore,.75)
-BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.75) 
-BSS$RADIO.adstock<-adstock(BSS$RADIO,.75)  
-BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.75) 
-BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.75)  
+BSS$print.adstock<-adstock(BSS$Print,.35) 
+BSS$InStore.adstock<-adstock(BSS$InStore,.1)
+BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.25) 
+BSS$RADIO.adstock<-adstock(BSS$RADIO,.4)  
+BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.65) 
+BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.65)  
 BSS$Media.adstock<-(BSS$print.adstock+BSS$InStore.adstock  
   +BSS$DirectMarketing.adstock+BSS$RADIO.adstock
   +BSS$TV.Taktisk.adstock+BSS$TV.Image.adstock)
@@ -528,15 +528,22 @@ legend("topleft",
 detach(BSS)
 attach(BSS) 
 
+
 #TASK 4
 # Modeling
-
-
+layout(1:2)
+ccf(Sales,Sol.Oslo,lag.max=52)
+ccf(Sales,Oslo...Mean.temperature,lag.max=52)
+ccf(Sales,Oslo...Total.precipitation,lag.max=52)# little correlation, remove from model
+ccf(Sales,Bergen...Mean.temperature,lag.max=52)
+ccf(Sales,Bergen...Total.precipitation,lag.max=52)
+ccf(Sales, Unemployment.rate, lag.max=52)
+ccf(Sales, Competitor.spending)
 mod.bestfit<-lm(Sales ~ Media.adstock+
-                 Unemployment.rate+
+                 lag(Unemployment.rate,3)+
                  Sol.Oslo+
                   Oslo...Mean.temperature+
-                 Oslo...Total.precipitation+
+                # Oslo...Total.precipitation+
                  Bergen...Mean.temperature+
                  Bergen...Total.precipitation+
                  Competitor.spending+
@@ -546,6 +553,7 @@ mod.bestfit<-lm(Sales ~ Media.adstock+
                #na.action = na.omit
 )
 summary(mod.bestfit)
+
 plot(residuals(mod.bestfit),type = 'l')
 medaltal = rep(mean(residuals(mod.bestfit)),times=length(residuals(mod.bestfit)))
 lines(medaltal,col=2)
@@ -556,10 +564,18 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 
-eps <- Sales-mod.full$fit
+eps <- Sales-mod.bestfit$fit
 RMSE <- sqrt(mean(eps^2))
+RMSE
 # Plot the fit
-
+plot(Sales,type='l')
+lines(mod.bestfit$fit, col=2)
+legend("topleft",
+       c("Sales data", "fitted siles data"),
+       lty = 1,
+       col=c('black', 'red'),
+       cex=0.6,
+       lwd=4)
 
 #attached <- search()
 #attached[!grepl("package", attached)]
