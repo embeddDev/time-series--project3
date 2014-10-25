@@ -336,15 +336,16 @@ detach(Data)
 # the competitor spends the lower sales in our store, hence the minus sign in front of that variable.
 
 
-BuildingSupplyStore = read.csv("BuildingSupplyStore.csv", header=TRUE, sep= ";",dec=",")
+BuildingSupplyStore = read.csv("BSS.csv", header=TRUE, sep= ";",dec=",")
 as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
 BuildingSupplyStore$Print = as.numeric.factor(BuildingSupplyStore$Print)
-BuildingSupplyStore$InStore = as.numeric.factor(BuildingSupplyStore$InStore)
-BuildingSupplyStore$DirectMarketing = as.numeric.factor(BuildingSupplyStore$DirectMarketing)
-BuildingSupplyStore$RADIO = as.numeric.factor(BuildingSupplyStore$RADIO)
+#BuildingSupplyStore$InStore = as.numeric.factor(BuildingSupplyStore$InStore)
+#BuildingSupplyStore$DirectMarketing = as.numeric.factor(BuildingSupplyStore$DirectMarketing)
+#BuildingSupplyStore$RADIO = as.numeric.factor(BuildingSupplyStore$RADIO)
 BuildingSupplyStore$TV.Taktisk = as.numeric.factor(BuildingSupplyStore$TV.Taktisk)
 BuildingSupplyStore$TV.Image = as.numeric.factor(BuildingSupplyStore$TV.Image)
-Sales.ts = ts(data=Sales, start=c(2006,1),end=c(2009,26),f=52)
+BuildingSupplyStore$Sales = as.numeric.factor(BuildingSupplyStore$Sales)
+Sales.ts = ts(data=BuildingSupplyStore$Sales, start=c(2006,1),end=c(2009,26),f=52)
 #making normal the default level
 BuildingSupplyStore = within(BuildingSupplyStore,Kalendar <- relevel(Kalendar,ref="Normal"))
 #BuildingSupplyStore$Sales = ts(data=BuildingSupplyStore$Sales, start =c(2006,1),end=c(2009,26),f=52)
@@ -355,7 +356,7 @@ attach(BuildingSupplyStore)
 #Plot
 
 plot(Sales.ts, type="l",main="Sales",col=1,lwd=1)
-lines(lowess(Sales, f=.1), col = 2,lwd=4)
+lines(lowess(Sales.ts, f=.1), col = 2,lwd=4)
 legend("topleft",
        c("Sales observation", "Scatter plot smooting"),
        lty = 1,
@@ -365,7 +366,7 @@ legend("topleft",
 # Plot yearly
 weeks = c(1:52,1:52,1:52,1:26)
 plot(as.numeric(Sales) ~weeks,pch=20,main="Yearly Sales")
-lines(lowess(Sales~weeks, f=.15), col = 2,lwd=4)
+lines(lowess(BuildingSupplyStore$Sales~weeks, f=.15), col = 2,lwd=4)
 legend("topleft",
        c("weekly Sales observations", "Scatter plot smooting"),
        lty = 1,
@@ -430,9 +431,9 @@ BuildingSupplyStore$DirectMarketing.adstock<-adstock(BuildingSupplyStore$DirectM
 BuildingSupplyStore$RADIO.adstock<-adstock(BuildingSupplyStore$RADIO,.75)
 BuildingSupplyStore$TV.Taktisk.adstock<-adstock(BuildingSupplyStore$TV.Taktisk,.75)
 BuildingSupplyStore$TV.Image.adstock<-adstock(BuildingSupplyStore$TV.Image,.75)
-BuildingSupplyStore$Media.adstock<-BuildingSupplyStore$print.adstock+BuildingSupplyStore$InStore.adstock
+BuildingSupplyStore$Media.adstock<-(BuildingSupplyStore$print.adstock+BuildingSupplyStore$InStore.adstock
   +BuildingSupplyStore$DirectMarketing.adstock+BuildingSupplyStore$RADIO.adstock
-  +BuildingSupplyStore$TV.Taktisk.adstock+BuildingSupplyStore$TV.Image.adstock
+  +BuildingSupplyStore$TV.Taktisk.adstock+BuildingSupplyStore$TV.Image.adstock)
 plot(BuildingSupplyStore$Media.adstock,type="l",col=3)
 lines(BuildingSupplyStore$TV.Taktisk)
 
