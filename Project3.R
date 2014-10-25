@@ -337,20 +337,22 @@ detach(Data)
 
 
 BSS = read.csv("BSS.csv", header=TRUE, sep= ";",dec=",")
-as.integer.factor <- function(x) {as.integer(levels(x))[x]}
-BSS$TV.Taktisk = as.integer.factor(BSS$TV.Taktisk)
-BSS$TV.Image = as.integer.factor(BSS$TV.Image)
-BSS$Sales = as.integer.factor(BSS$Sales)
-BSS$Sol.Oslo = as.integer.factor(BSS$Sol.Oslo)
-BSS$Oslo...Mean.temperature = as.integer.factor(BSS$Oslo...Mean.temperature)
-BSS$Bergen...Mean.temperature = as.integer.factor(BSS$Bergen...Mean.temperature)
-BSS$Bergen...Total.precipitation = as.integer.factor(BSS$Bergen...Total.precipitation)
-BSS$Oslo...Total.precipitation = as.integer.factor(BSS$Oslo...Total.precipitation)
-BSS$Competitor.spending = as.integer.factor(BSS$Competitor.spending)
-BSS$Tracking = as.integer.factor(BSS$Tracking)
-BSS$Tracking.smoothed = as.integer.factor(BSS$Tracking.smoothed)
-BSS$Respons.Media = as.integer.factor(BSS$Respons.Media)
-BSS$Unemployment.rate = as.integer.factor(BSS$Unemployment.rate)
+as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
+
+BSS$TV.Taktisk = as.numeric.factor(BSS$TV.Taktisk)
+BSS$TV.Image = as.numeric.factor(BSS$TV.Image)
+BSS$Sales = as.numeric.factor(BSS$Sales)
+BSS$Sol.Oslo = as.numeric.factor(BSS$Sol.Oslo)
+BSS$Oslo...Mean.temperature = as.numeric.factor(BSS$Oslo...Mean.temperature)
+BSS$Bergen...Mean.temperature = as.numeric.factor(BSS$Bergen...Mean.temperature)
+BSS$Bergen...Total.precipitation = as.numeric.factor(BSS$Bergen...Total.precipitation)
+BSS$Oslo...Total.precipitation = as.numeric.factor(BSS$Oslo...Total.precipitation)
+BSS$Competitor.spending = as.numeric.factor(BSS$Competitor.spending)
+BSS$Tracking = as.numeric.factor(BSS$Tracking)
+BSS$Tracking.smoothed = as.numeric.factor(BSS$Tracking.smoothed)
+BSS$Respons.Media = as.numeric.factor(BSS$Respons.Media)
+BSS$Unemployment.rate = as.numeric.factor(BSS$Unemployment.rate)
+BSS$Season = as.numeric(levels(BSS$Season)[BSS$Season])
 Sales.ts = ts(data=BSS$Sales, start=c(2006,1),end=c(2009,26),f=52)
 #making normal the default level
 BSS = within(BSS,Kalendar <- relevel(Kalendar,ref="Normal"))
@@ -415,7 +417,8 @@ mod.full<-lm(Sales ~ Print+
                Bergen...Mean.temperature+
                Bergen...Total.precipitation+
                Competitor.spending+
-               Kalendar
+               Kalendar+
+               Season
                 #na.action = na.omit
             )
 summary(mod.full)
