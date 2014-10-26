@@ -576,19 +576,20 @@ legend("topleft",
 #attached[!grepl("package", attached)]
 
 #Task4
- xn  = mod.bestfit$model[3]
+ xn  = mod.bestfit$model[2:5]
  xn_min = apply(xn,MARGIN=2, FUN=min)
  xn_max = apply(xn, MARGIN=2 , FUN=max)
  minmaxB = rep(NA,length(xn))
-for(i in 3:length(xn)){
+for(i in 2:(length(xn)+1)){
   if(mod.bestfit$coefficients[i] > 0){
-    minmaxB[i] = xn_min[i]
+    minmaxB[i-1] = xn_min[i-1]
   }
   else{
-    minmaxB[i] = xn_max[i]
+    minmaxB[i-1] = xn_max[i-1]
   }  
 }
-(betagildi = (mod.bestfit$coefficients[3]))
+(betagildi = (mod.bestfit$coefficients[2:5]))
+#betagildi = as.vector(betagildi)
 ahrif = (betagildi * xn) - (betagildi * minmaxB)
 
 Betax = (betagildi * xn)
