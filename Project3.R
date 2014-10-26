@@ -539,16 +539,19 @@ ccf(Sales,Bergen...Mean.temperature,lag.max=52)
 ccf(Sales,Bergen...Total.precipitation,lag.max=52)
 ccf(Sales, Unemployment.rate, lag.max=52)
 ccf(Sales, Competitor.spending)
+layout(1:1)
+plot(ts(Sol.Oslo,start=c(2006,1),end=c(2009,26),f=52) ,type='l')
+
 mod.bestfit<-lm(Sales ~ Media.adstock+
                  lag(Unemployment.rate,3)+
                 # Sol.Oslo+
                  # Oslo...Mean.temperature+
                 # Oslo...Total.precipitation+
-                # Bergen...Mean.temperature+
+                 Bergen...Mean.temperature+
                 # Bergen...Total.precipitation+
                  #Competitor.spending+
                  Kalendar+
-                 #Tracking.smoothed+
+                #Tracking.smoothed+
                  Season
                #na.action = na.omit
 )
@@ -581,4 +584,18 @@ legend("topleft",
 #attached[!grepl("package", attached)]
 
 #Task4
-Seas = cycle(Sales.ts)
+ xn  = mod.bestfit$model
+ xn_min = apply(xn,MARGIN=2, FUN=min)
+ xn_max = apply(xn, MARGIN=2 , FUN=max)
+ minmaxB = rep(NA,length(xn))
+  for(i in 1:length(xn)){
+    if(mod.bestfit$coefficients[i] >0){
+      minmaxB[i] = xn_min[i]
+    }
+    else{
+      minmaxB[i] = xn_max[i]
+    }  
+  }
+
+betagildi = as.vector(mod.bestfit$coefficients)
+ahrif = (betagildi * xn) - (betagildi * minmaxB)
