@@ -1,51 +1,45 @@
-#TASK 1 - project 3
+# PROJECT 3
 
 ############################################################################################
 #course:  Time Series Analysis, T-862-TIMA
-#Date:    //2014
+#Date:    26/10/2014
 #Students: Daniel Bergmann Sigtryggsson, Lilja Bjorg Gudmundsdottir, Jon Vilberg Georgsson 
 #
 ############################################################################################
 
 
-# -------Brain storming excersice (10%)-------
+# -------BRAIN STORMING EXERCISE (10%)--------
 # Identify causal variables and hypothize an econometric structural equation for the following variables;
-# . Stock price index, for your home country,
+# Stock price index, for your home country,
 
+# OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
+# Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
+# Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
+# Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
 
-#OMX =  beta0 -ISL_GENGI*beta1 - oliuverd*beta2 + fiskverd*beta3 + epsilon
-#Heakandi kronu gengi laekkar hlutabrefavisitoluna, thi staerstu felogin gera upp i erlendum gjaldeyri.
-#Haekandi oliuverd hefur neikvaed ahrif a felog eins og eimskip og N1
-#Fiskverd hefur ahrif a felog eins og Granda og Eimskip og allt hagkerfid
+# haegt ad nalgast upplysingar t.d. hja gamma.is
 
-#haegt ad nalgast upplysingar t.d. hja gamma.is
+# Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
+#                                                students only, as there is no spot market in Iceland)
 
-# . Scandinavian electricity market(Nordpool) or the electrical market of your home country(for foreign
-#                  students only, as there is no spot market in Iceland),
-
-#NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
+# NORDPOOL = beta0 - utihitastig*beta1 season*beta2 + epsilon
 
 # haerra utihitastig laekkar eftirspurn eftir rafmagni, vedurupplysingar eru audvelt ad nalgast
-#tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
+# tad er meiri eftirspurn eftir rafmagni a veturnar, tannig ad seaon hefur ahrif.
 
-# . Inflation.
-#INFLATION = beta0 - styrivextir * beta1 + VSK*beta2 + penigamagn_i_umferd + epsilon
+# Inflation.
+# INFLATION = beta0 - styrivextir * beta1 + VSK*beta2 + penigamagn_i_umferd + epsilon
 # haerri styrivextri og haekkandi VSK laekka verdbolgu, gogn til hja t.d. hagstofu
-#peningamagn i umferd eykur verdbolgu
+# peningamagn i umferd eykur verdbolgu
 
-# -------Housing Economics (40%)--------
+# -------HOUSING ECONOMICS (40%)---------
 
 Data = read.csv("hpi.csv", header=TRUE, sep= ";",dec=",")
 attach(Data)
-#TASK 1
 
-#Task 1
-#Does it make sense to use all of the data? Theorize, 
-
-#ANS: NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
-
-#Construcct a structural equation for house prices
-
+# TASK 1
+# Construcct a structural equation for house prices
+# Does it make sense to use all of the data?  
 # ANS:
 #       Y ~ Beta0 + Beta1*CCI + Beta2*LBH + Beta3*PPI - Beta4*NHF + Beta5*LI + Beta6*inflation + Beta7*indexedLoans
 
@@ -54,11 +48,11 @@ attach(Data)
 # where PPI is purchasing power index
 # where NHF is new housing finished
 # where LI is Lease index
+# NO, some of the variable contain very similar information, and should not improve the model very much due to cross correlation.
 
-#which data to use and explain your data selection.
-# 
+# Theorize, which data to use and explain your data selection.
+
 #ANS: 
-
 # CCI - hvad kostar ad byggja hus hlytur ad hafa ahrif a husnaedisverd
         #aetti ad hafa mest ahrif.
 # LBH - thvi meira sem bankarnir lana til household ?vi fleiri vilja kaupa hus/ibudir
@@ -79,6 +73,7 @@ attach(Data)
 # Currency dependent loans in the ecconomy - ekki tad stor hluti af heidlarlanum og
                     #ekki endilegi notad til husnaediskaupa.
 
+# TASK 2
 HousePrice_mdl =lm(HousePriceIndex ~LeaseIndex+
                      ConstructionCostIndex+
                      LoansOfBanksToHouseholds+
@@ -95,8 +90,6 @@ HousePrices_resid = plot(residuals(HousePrice_mdl), type= 'l')
 pairs(Data[4:11], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 pairs(Data[c(4,12:17)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 #We can see from this pair plot that house price index is higly correlated with housing finished!
-
-
 
 
 #Plot the relationship between house prices and leasing over time. Theorize on the relationship 
@@ -156,8 +149,6 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 #Loans of Banks to households seem to share similar trend, with a lag of 1 or 2 months.       
-
-
 
 # Plot House Price index vs. UnindexedLoans, CentralBankRates, Inflation
 layout(1:1)
@@ -241,9 +232,9 @@ legend("topleft",
        col=c('black', 'darkred','green','purple'),
        cex=0.6,
        lwd=4)
-#Housing finished seem to share a similar trend.
+# Housing finished seem to share a similar trend.
 
-#now a comparison of variables with similar trend
+# now a comparison of variables with similar trend
 plot((HousePriceIndex-mean(HousePriceIndex))/sd(HousePriceIndex) ~YearMonth,
      xlab="Time",
      ylab="Scaled indexes/rates",
@@ -272,27 +263,20 @@ legend("topleft",
        col=c('black', 'darkred','green','purple','Blue'),
        cex=0.6,
        lwd=4)
-#Loans to households seems like the most obvious variable here with lag of 1.
+# Loans to households seems like the most obvious variable here with lag of 1.
 
+# TASK 3
+# Create a model for the house price index using all relevant variables.
 
-#-----Task 3----------
-#Create a model for the house price index using all relevant variables.
-
-
-
-
-
-
-
-#New intervention model for 90% loans in the economy 
+# New intervention model for 90% loans in the economy 
 Loans90 = rep(0,times=54) #initialize zeros up to 1 july 2004
-#1 juli 2004 - 1okt 2008
+# 1 juli 2004 - 1okt 2008
 n = 55:106
 hamming_window = 0.54 - 0.46*cos((2*pi*n/(55-1)))
 Loans90 = c(Loans90, hamming_window, rep(0,times=length(Month)-106))
 plot(Loans90 ~YearMonth, type='l', main="90% morgage model")
 
-#NEw model with intervention model
+# NEw model with intervention model
 HousePrice_mdl =lm(HousePriceIndex 
                    ~ConstructionCostIndex+
                      lag(HousingFinished,1)+
@@ -308,7 +292,7 @@ HousePrices_resid = plot(residuals(HousePrice_mdl),
                          col=2
                          )
 grid()
-#PLOT HPI on fitted model
+# PLOT HPI on fitted model
 plot(HousePriceIndex ~YearMonth, type='l', col="blue",lwd=4)
 lines(HousePrice_mdl$fit, type='l', col="red",lwd=4)
 legend("topleft",
@@ -318,13 +302,17 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 
+# TASK 4
 
-#----------END OF Housing economics ------------------------
-
-#----------   Sales modeling   ---------------------------------
 detach(Data)
+#----------END OF Housing economics -------------
 
-# ------ Task 1 -------
+#--------- SALES MODELING (50%) -------------
+
+# TASK 1
+
+# Construct a sales model for the data. Theorize on the expected sign of the parameter estimates on each of the 
+# variables. Does it make sense to use all of the data? Theorize, which data to use and explain your data selection.
 
 # Y ~ beta0 + beta1*Mean.temperature(Oslo) - beta2*Total.precipitation(Oslo) + beta3*Mean.temperature(Bergen) - beta4*Total.precipitation(Bergen)
 #    beta5*Print + beta6*InStore + beta7*DirectMarketing + beta8*RADIO + beta9*TV:Taktisk + beta10*TV.Image - beta11*Competitor.spending
@@ -334,7 +322,6 @@ detach(Data)
 # at least not building houses (outside work). We belive that temperature also has an effect on sales. We think that all kind of marketing will 
 # increase the sales and therefore include all marketing variables with a plus sign. The Competitor spending could also affect our sale, the more 
 # the competitor spends the lower sales in our store, hence the minus sign in front of that variable.
-
 
 BSS = read.csv("BSS.csv", header=TRUE, sep= ";",dec=",")
 as.numeric.factor <- function(x) {as.numeric(levels(x))[x]}
@@ -359,7 +346,7 @@ BSS = within(BSS,Kalendar <- relevel(Kalendar,ref="Normal"))
 #BSS$Sales = ts(data=BSS$Sales, start =c(2006,1),end=c(2009,26),f=52)
 attach(BSS)
 
-#*************Task 2, preliminary analysis********** 
+# TASK 2, preliminary analysis
 
 #Plot
 
@@ -389,7 +376,6 @@ pairs(BSS[c(2,9:14)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.p
 
 pairs(BSS[c(2,16:22)], upper.panel = panel.cor,lower.panel = panel.smooth, diag.panel = panel.hist)
 
-
 # ACF and PACF
 layout(1:3)
 acf(Sales) # Alot of MA, nonstationary TS
@@ -400,9 +386,8 @@ plot(stl(Sales.ts,s.window="periodic")) # trend seasonal decomposition
 #We see alot of seasonality and trend in sales
 plot(aggregate(Sales.ts)) # removing seasonal effect by aggregating the data to the annual level
 boxplot(Sales.ts ~ cycle(Sales.ts))
-#**********Task 3 - Preliminary sales model***************
 
-
+# TASK 3 - Preliminary sales model
 # Modeling
 mod.full<-lm(Sales ~ Print+
                 InStore+
@@ -458,6 +443,11 @@ BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.25)
 BSS$RADIO.adstock<-adstock(BSS$RADIO,.4)  
 BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.65) 
 BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.65)  
+BSS$InStore.adstock<-adstock(BSS$InStore,.1) 
+BSS$DirectMarketing.adstock<-adstock(BSS$DirectMarketing,.25) 
+BSS$RADIO.adstock<-adstock(BSS$RADIO,.4)
+BSS$TV.Taktisk.adstock<-adstock(BSS$TV.Taktisk,.65) 
+BSS$TV.Image.adstock<-adstock(BSS$TV.Image,.65)
 BSS$Media.adstock<-(BSS$print.adstock+BSS$InStore.adstock  
   +BSS$DirectMarketing.adstock+BSS$RADIO.adstock
   +BSS$TV.Taktisk.adstock+BSS$TV.Image.adstock)
@@ -528,7 +518,6 @@ legend("topleft",
 detach(BSS)
 attach(BSS) 
 
-
 #TASK 4
 # Modeling
 layout(1:2)
@@ -553,9 +542,10 @@ mod.bestfit<-lm(Sales ~ Media.adstock+
                   Season+
                   Kalendar
                 #Tracking.smoothed+
-                 
-               #na.action = na.omit
+                
+                #na.action = na.omit
 )
+
 summary(mod.bestfit)
 
 plot(residuals(mod.bestfit),type = 'l')
@@ -571,6 +561,7 @@ legend("topleft",
 eps <- Sales-mod.bestfit$fit
 RMSE <- sqrt(mean(eps^2))
 RMSE
+
 # Plot the fit
 plot(Sales,type='l')
 lines(mod.bestfit$fit, col=2)
@@ -599,6 +590,7 @@ for(i in 3:length(xn)){
 }
 (betagildi = (mod.bestfit$coefficients[3]))
 ahrif = (betagildi * xn) - (betagildi * minmaxB)
+
 Betax = (betagildi * xn)
 Betax_sum = apply(abs(Betax), 1, sum)
 ahrif = (betagildi * xn)/ Betax_sum
@@ -612,4 +604,5 @@ install.packages("asbio")
 require("asbio")
 lm.without = update(mod.bestfit, ~. - BSS$Media.adstock)
 plot(partial.R2(lm.without,mod.bestfit))
+
 
