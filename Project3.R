@@ -550,9 +550,10 @@ mod.bestfit<-lm(Sales ~ Media.adstock+
                  Bergen...Mean.temperature+
                 # Bergen...Total.precipitation+
                  #Competitor.spending+
-                 Kalendar+
+                  Season+
+                  Kalendar
                 #Tracking.smoothed+
-                 Season
+                 
                #na.action = na.omit
 )
 summary(mod.bestfit)
@@ -584,18 +585,31 @@ legend("topleft",
 #attached[!grepl("package", attached)]
 
 #Task4
- xn  = mod.bestfit$model
+ xn  = mod.bestfit$model[3]
  xn_min = apply(xn,MARGIN=2, FUN=min)
  xn_max = apply(xn, MARGIN=2 , FUN=max)
  minmaxB = rep(NA,length(xn))
-  for(i in 1:length(xn)){
-    if(mod.bestfit$coefficients[i] >0){
-      minmaxB[i] = xn_min[i]
-    }
-    else{
-      minmaxB[i] = xn_max[i]
-    }  
+for(i in 3:length(xn)){
+  if(mod.bestfit$coefficients[i] > 0){
+    minmaxB[i] = xn_min[i]
   }
-
-betagildi = as.vector(mod.bestfit$coefficients)
+  else{
+    minmaxB[i] = xn_max[i]
+  }  
+}
+(betagildi = (mod.bestfit$coefficients[3]))
 ahrif = (betagildi * xn) - (betagildi * minmaxB)
+Betax = (betagildi * xn)
+Betax_sum = apply(abs(Betax), 1, sum)
+ahrif = (betagildi * xn)/ Betax_sum
+
+
+# lm.with<-lm(Y~Soil.C+Soil.N+Slope+Aspect)
+# lm.without<-update(lm.with, ~. - Soil.N)
+# 
+# partial.R2(lm.without,lm.with)
+install.packages("asbio")
+require("asbio")
+lm.without = update(mod.bestfit, ~. - BSS$Media.adstock)
+plot(partial.R2(lm.without,mod.bestfit))
+
