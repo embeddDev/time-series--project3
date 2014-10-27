@@ -265,7 +265,7 @@ legend("topleft",
        lwd=4)
 # Loans to households seems like the most obvious variable here with lag of 1.
 
-# TASK 3
+#TASK 4
 # Create a model for the house price index using all relevant variables.
 
 # New intervention model for 90% loans in the economy 
@@ -276,6 +276,7 @@ hamming_window = 0.54 - 0.46*cos((2*pi*n/(55-1)))
 Loans90 = c(Loans90, hamming_window, rep(0,times=length(Month)-106))
 plot(Loans90 ~YearMonth, type='l', main="90% morgage model")
 
+# TASK 3
 # NEw model with intervention model
 HousePrice_mdl =lm(HousePriceIndex 
                    ~ConstructionCostIndex+
@@ -302,7 +303,7 @@ legend("topleft",
        cex=0.6,
        lwd=4)
 
-# TASK 4
+
 
 detach(Data)
 #----------END OF Housing economics -------------
