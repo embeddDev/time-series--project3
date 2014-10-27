@@ -532,7 +532,7 @@ layout(1:1)
 plot(ts(Sol.Oslo,start=c(2006,1),end=c(2009,26),f=52) ,type='l')
 
 mod.bestfit<-lm(Sales ~ Media.adstock+
-                 lag(Unemployment.rate,3)+
+                 Unemployment.rate+
                 # Sol.Oslo+
                  # Oslo...Mean.temperature+
                 # Oslo...Total.precipitation+
@@ -559,14 +559,13 @@ legend("topleft",
        lwd=4)
 
 eps <- Sales-mod.bestfit$fit
-RMSE <- sqrt(mean(eps^2))
-RMSE
+(RMSE <- sqrt(mean(eps^2)))
 
 # Plot the fit
 plot(Sales,type='l')
 lines(mod.bestfit$fit, col=2)
 legend("topleft",
-       c("Sales data", "fitted siles data"),
+       c("Sales data", "fitted sales data"),
        lty = 1,
        col=c('black', 'red'),
        cex=0.6,
@@ -576,11 +575,13 @@ legend("topleft",
 #attached[!grepl("package", attached)]
 
 #Task4
- xn  = mod.bestfit$model[2:5]
+ xn  = mod.bestfit$model[2:5]  #losna vid sales model sem er stak 1
+head(xn)
  xn_min = apply(xn,MARGIN=2, FUN=min)
  xn_max = apply(xn, MARGIN=2 , FUN=max)
  minmaxB = rep(NA,length(xn))
-for(i in 2:(length(xn)+1)){
+
+for(i in 2:5){
   if(mod.bestfit$coefficients[i] > 0){
     minmaxB[i-1] = xn_min[i-1]
   }
@@ -590,20 +591,14 @@ for(i in 2:(length(xn)+1)){
 }
 (betagildi = (mod.bestfit$coefficients[2:5]))
 #betagildi = as.vector(betagildi)
-ahrif = (betagildi * xn) - (betagildi * minmaxB)
+ahrif = xn
+ahrif[1] = (xn[1] * betagildi[1]) - (betagildi[1] * minmaxB[1])
+ahrif[2] = (xn[2] * betagildi[2]) - (betagildi[2] * minmaxB[2])
+ahrif[3] = (xn[3] * betagildi[3]) - (betagildi[3] * minmaxB[3])
+ahrif[4] = (xn[4] * betagildi[4]) - (betagildi[4] * minmaxB[4])
+names(ahrif)[names(ahrif)=="Unemployment.rate"] <-"unempoy.rate"
+names(ahrif)[names(ahrif)=="Bergen...Mean.temperature"] <-"Bergen.temp"
 
-Betax = (betagildi * xn)
-Betax_sum = apply(abs(Betax), 1, sum)
-ahrif = (betagildi * xn)/ Betax_sum
+ahrif = ts(ahrif, start=c(2006,1),end=c(2009,26),f=52)
 
-
-# lm.with<-lm(Y~Soil.C+Soil.N+Slope+Aspect)
-# lm.without<-update(lm.with, ~. - Soil.N)
-# 
-# partial.R2(lm.without,lm.with)
-install.packages("asbio")
-require("asbio")
-lm.without = update(mod.bestfit, ~. - BSS$Media.adstock)
-plot(partial.R2(lm.without,mod.bestfit))
-
-
+plot(ahrif,col=1:4,main="Effect of regressor variables",y.labels=c("Season","B.mean.temp","unemployment","meadi.adstock"))
